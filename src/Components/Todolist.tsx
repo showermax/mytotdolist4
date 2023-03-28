@@ -1,5 +1,6 @@
-import React from "react";
+import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {SuperButton} from "./Super/SuperButton";
+import {SuperInput} from "./Super/SuperInput";
 
 type PropsType = {
     tasks: TaskType[]
@@ -18,12 +19,26 @@ export type TaskType={
     }
 }
 export const Todolist = (props: PropsType) => {
+    const [newTaskName, setNewTaskName] = useState<string>('')
+
+    const onKeyDownHandler =(k: KeyboardEvent<HTMLInputElement>)=>{
+        if (k.key==='Enter') {
+            props.addTask()
+            setNewTaskName('')
+        }
+    }
+    const onChangeHandler =(e: ChangeEvent<HTMLInputElement>)=>{
+        setNewTaskName(e.currentTarget.value)
+    }
+    const addTaskHandler =(n:string)=>{
+        props.addTask(newTaskName)
+    }
     return (
         <div className="todolist">
             <div>{props.title}</div>
             <div className="input">
-                <input type="text"/>
-                <SuperButton title='Add' onClickCallBack={props.addTask}/>
+                <SuperInput type="text" value={newTaskName} onChangeCallback={onChangeHandler} onKeyDownCallBack={onKeyDownHandler}/>
+                <SuperButton title='Add' onClickCallBack={addTaskHandler}/>
             </div>
             <div className="list">
                 <ol>

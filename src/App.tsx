@@ -45,7 +45,6 @@ function App() {
         setTasks({...tasks, New: []})
     }
     const addTask = (id: string) => {
-        console.log(id)
         setTasks({
             ...tasks,
             [id]: [...tasks[id], {
@@ -55,7 +54,7 @@ function App() {
                 properties: {priority: 'high', assignedTo: false}
             }]
         })
-    }
+      }
     const deleteTask =(id_List: string, id_task:string)=>{
         setTasks({...tasks, [id_List]: tasks[id_List].filter(el=>el.id!==id_task)})
     }
