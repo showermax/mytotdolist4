@@ -44,12 +44,12 @@ function App() {
         setTodolists([...todolists, {id: 'New', title: 'New'}])
         setTasks({...tasks, New: []})
     }
-    const addTask = (id: string) => {
+    const addTask = (id: string,n:string) => {
         setTasks({
             ...tasks,
             [id]: [...tasks[id], {
                 id: v1(),
-                taskName: 'убрать фотку с лешиным компрессором',
+                taskName: n,
                 isDone: false,
                 properties: {priority: 'high', assignedTo: false}
             }]
@@ -67,7 +67,7 @@ function App() {
                 {todolists.map((el, i) =>
                     <Todolist tasks={tasks[el.id]}
                               title={el.title}
-                              addTask={() => addTask(el.id)}
+                              addTask={(n) => addTask(el.id,n)}
                               deleteTask={(id) => deleteTask(el.id, id)}
                     />)
                 }

@@ -5,7 +5,7 @@ import {SuperInput} from "./Super/SuperInput";
 type PropsType = {
     tasks: TaskType[]
     title?: string
-    addTask: ()=>void
+    addTask: (n: string)=>void
     deleteTask: (id: string)=>void
 }
 
@@ -23,7 +23,7 @@ export const Todolist = (props: PropsType) => {
 
     const onKeyDownHandler =(k: KeyboardEvent<HTMLInputElement>)=>{
         if (k.key==='Enter') {
-            props.addTask()
+            props.addTask(newTaskName)
             setNewTaskName('')
         }
     }
@@ -31,14 +31,15 @@ export const Todolist = (props: PropsType) => {
         setNewTaskName(e.currentTarget.value)
     }
     const addTaskHandler =(n:string)=>{
-        props.addTask(newTaskName)
+        props.addTask(n)
+        setNewTaskName('')
     }
     return (
         <div className="todolist">
             <div>{props.title}</div>
             <div className="input">
                 <SuperInput type="text" value={newTaskName} onChangeCallback={onChangeHandler} onKeyDownCallBack={onKeyDownHandler}/>
-                <SuperButton title='Add' onClickCallBack={addTaskHandler}/>
+                <SuperButton title='Add' onClickCallBack={()=>addTaskHandler(newTaskName)}/>
             </div>
             <div className="list">
                 <ol>
