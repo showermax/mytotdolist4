@@ -3,32 +3,49 @@ import logo from './logo.svg';
 import './App.css';
 import {v1} from "uuid";
 import {Todolist} from "./Components/Todolist";
+import {NewTodolist} from "./Components/NewTodolist";
 
 
 function App() {
     const Inbox = v1()
     const Today = v1()
     const Done = v1()
+    // list of tasks
     const [tasks, setTasks] = useState({
         [Inbox]: [
             {id: v1(), taskName: 'initial task', isDone: false, properties: {priority: 'low', assignedTo: false}},
             {id: v1(), taskName: 'learn how to use', isDone: false, properties: {priority: 'high', assignedTo: false}}
         ],
         [Today]: [
-
+            {id: v1(), taskName: 'this task you should do today', isDone: false, properties: {priority: 'low', assignedTo: false}},
         ],
         [Done]: [
-
+            {id: v1(), taskName: 'that is already done', isDone: false, properties: {priority: 'normal', assignedTo: false}},
         ]
     })
-    console.log(tasks[Inbox])
+    // list of todolists
+    const [todolists, setTodolists]=useState([
+        {id:Inbox, title: 'Inbox'},
+        {id:Today, title: 'Today'},
+        {id:Done, title: 'Done'}
+        ]
+    )
+    const addNewTodolist =()=>{
+        setTodolists([...todolists,  {id:'New', title: 'New'}])
+        setTasks({...tasks, New: []})
+    }
+    const addTask =(id: string)=>{
+        console.log(id)
+        setTasks({...tasks, [id]: [...tasks[id], {id: v1(), taskName: 'new task', isDone: false, properties: {priority: 'high', assignedTo: false}}]})
+    }
     return (
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo"/>
             </header>
             <div className="todolists">
-                <Todolist tasks={tasks[Inbox]} />
+                {todolists.map((el,i)=><Todolist tasks={tasks[el.id]} title={el.title} addTask={()=>addTask(el.id)}/>)}
+                <NewTodolist addNew={addNewTodolist}/>
             </div>
         </div>
     );

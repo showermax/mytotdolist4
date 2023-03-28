@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+.todolists {
+  display:flex;
+  gap: 30px;
+  padding: 20px;
+  justify-content: space-between;
+}
+.todolist{
+  width: 300px;
+  border: 1px solid black;
+  border-radius: 10px;
+  min-height:200px;
+}
+.todolist ol {
+  text-align: left;
+}
