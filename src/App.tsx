@@ -28,7 +28,7 @@ function App() {
             {
                 id: v1(),
                 taskName: 'that is already done',
-                isDone: false,
+                isDone: true,
                 properties: {priority: 'normal', assignedTo: false}
             },
         ]
@@ -41,9 +41,15 @@ function App() {
         ]
     )
     const addNewTodolist = () => {
-        setTodolists([...todolists, {id: 'New', title: 'New'}])
-        setTasks({...tasks, New: []})
+        let newID=v1()
+        setTodolists([...todolists, {id: newID, title: 'New'}])
+        setTasks({...tasks, [newID]: []})
     }
+    const deleteTodolist = (id: string) => {
+    setTodolists(todolists.filter(el=>el.id!==id))
+        delete tasks[id]
+    }
+
     const addTask = (id: string,n:string) => {
         setTasks({
             ...tasks,
@@ -69,6 +75,7 @@ function App() {
                               title={el.title}
                               addTask={(n) => addTask(el.id,n)}
                               deleteTask={(id) => deleteTask(el.id, id)}
+                              deleteTodolist={() => deleteTodolist(el.id)}
                     />)
                 }
                 <NewTodolist addNew={addNewTodolist}/>

@@ -47,6 +47,9 @@
   justify-content: space-between;
 }
 .todolist{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding:5px;
   width: 300px;
   border: 1px solid black;
@@ -55,4 +58,7 @@
 }
 .todolist ol {
   text-align: left;
+}
+.deletetodolist img{
+  width: 20px;
 }
