@@ -13,15 +13,15 @@ function App() {
     // list of tasks
     const [tasks, setTasks] = useState({
         [Inbox]: [
-            {id: v1(), taskName: 'initial task', isDone: false, properties: {priority: 'low', assignedTo: false}},
-            {id: v1(), taskName: 'learn how to use', isDone: false, properties: {priority: 'high', assignedTo: false}}
+            {id: v1(), taskName: 'initial task', isDone: false, properties: {tags: {priority: 'low', today:false}, assignedTo: false}},
+            {id: v1(), taskName: 'learn how to use', isDone: false, properties: {tags: {priority: 'high', today:false}, assignedTo: false}}
         ],
         [Today]: [
             {
                 id: v1(),
                 taskName: 'this task you should do today',
                 isDone: false,
-                properties: {priority: 'low', assignedTo: false}
+                properties: {tags: {priority: 'high', today:true}, assignedTo: false}
             },
         ],
         [Done]: [
@@ -29,7 +29,7 @@ function App() {
                 id: v1(),
                 taskName: 'that is already done',
                 isDone: true,
-                properties: {priority: 'normal', assignedTo: false}
+                properties: {tags: {priority: 'normal', today:false}, assignedTo: false}
             },
         ]
     })
@@ -50,16 +50,19 @@ function App() {
         delete tasks[id]
     }
 
-    const addTask = (id: string, n: string) => {
+    const addTask = (id_List: string, n: string) => {
         setTasks({
             ...tasks,
-            [id]: [...tasks[id], {
+            [id_List]: [...tasks[id_List], {
                 id: v1(),
                 taskName: n,
                 isDone: false,
-                properties: {priority: 'high', assignedTo: false}
+                properties: {tags: {priority: 'normal', today:id_List===Today}, assignedTo: false}
             }]
         })
+        console.log(id_List)
+        console.log(Today)
+
     }
     const deleteTask = (id_List: string, id_task: string) => {
         setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
@@ -71,6 +74,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo"/>
+                <div>`The todolists IDs are: Inbox - {Inbox}, Today - ${Today}`</div>
             </header>
             <div className="todolists">
                 {todolists.map((el) =>

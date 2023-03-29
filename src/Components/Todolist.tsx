@@ -16,7 +16,7 @@ export type TaskType = {
     taskName: string
     isDone: boolean
     properties: {
-        priority: string
+        tags: {priority: string, today: boolean}
         assignedTo: boolean
     }
 }
@@ -51,6 +51,7 @@ export const Todolist = (props: PropsType) => {
                             <li key={i}>
                                 <input type="checkbox" checked={el.isDone} onChange={()=>props.makeDone(el.id)}/>
                                 {el.taskName}
+                                {el.properties.tags.today && '  todayss'}
                                 <SuperButton title='X' onClickCallBack={() => props.deleteTask(el.id)}/>
                             </li>)}
                     </ol>
