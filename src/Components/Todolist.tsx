@@ -4,11 +4,13 @@ import {SuperInput} from "./Super/SuperInput";
 
 type PropsType = {
     tasks: TaskType[]
+    id_List: string
     title?: string
-    addTask: (n: string) => void
+    addTask: (id_List: string, n: string) => void
+    setForToday: (id: string) => void
     deleteTask: (id: string) => void
-    deleteTodolist: ()=>void
-    makeDone: (id:string) => void
+    deleteTodolist: () => void
+    makeDone: (id: string) => void
 }
 
 export type TaskType = {
@@ -16,7 +18,7 @@ export type TaskType = {
     taskName: string
     isDone: boolean
     properties: {
-        tags: {priority: string, today: boolean}
+        tags: { priority: string, today: boolean }
         assignedTo: boolean
     }
 }
@@ -25,7 +27,7 @@ export const Todolist = (props: PropsType) => {
 
     const onKeyDownHandler = (k: KeyboardEvent<HTMLInputElement>) => {
         if (k.key === 'Enter') {
-            props.addTask(newTaskName)
+            props.addTask(props.id_List, newTaskName)
             setNewTaskName('')
         }
     }
@@ -33,7 +35,7 @@ export const Todolist = (props: PropsType) => {
         setNewTaskName(e.currentTarget.value)
     }
     const addTaskHandler = (n: string) => {
-        props.addTask(n)
+        props.addTask(props.id_List, n)
         setNewTaskName('')
     }
     return (
@@ -49,10 +51,12 @@ export const Todolist = (props: PropsType) => {
                     <ol>
                         {props.tasks.map((el, i) =>
                             <li key={i}>
-                                <input type="checkbox" checked={el.isDone} onChange={()=>props.makeDone(el.id)}/>
+                                <input type="checkbox" checked={el.isDone} onChange={() => props.makeDone(el.id)}/>
                                 {el.taskName}
-                                {el.properties.tags.today && '  todayss'}
-                                <SuperButton title='X' onClickCallBack={() => props.deleteTask(el.id)}/>
+                                <div>
+                                    {(props.id_List === 'todolistid-inbox') && <SuperButton title='>' onClickCallBack={() => props.setForToday(el.id)}/>}
+                                    <SuperButton title='X' onClickCallBack={() => props.deleteTask(el.id)}/>
+                                </div>
                             </li>)}
                     </ol>
                 </div>

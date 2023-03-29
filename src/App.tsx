@@ -7,8 +7,8 @@ import {NewTodolist} from "./Components/NewTodolist";
 
 
 function App() {
-    const Inbox = v1()
-    const Today = v1()
+    const Inbox = 'todolistid-inbox'
+    const Today = 'todolistid-today'
     const Done = v1()
     // list of tasks
     const [tasks, setTasks] = useState({
@@ -57,18 +57,21 @@ function App() {
                 id: v1(),
                 taskName: n,
                 isDone: false,
-                properties: {tags: {priority: 'normal', today:id_List===Today}, assignedTo: false}
+                properties: {tags: {priority: 'normal', today: id_List===Today}, assignedTo: false}
             }]
         })
         console.log(id_List)
         console.log(Today)
-
     }
     const deleteTask = (id_List: string, id_task: string) => {
         setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
     }
     const makeDone = (id_List: string, id_task: string)=>{
         setTasks({...tasks, [id_List]: tasks[id_List].map(el=>el.id===id_task ? {...el, isDone: !el.isDone} : el)})
+    }
+    const setForToday = (id_List: string, id: string)=>{
+        setTasks({...tasks, [id_List]: tasks[id_List].map(el=>el.id===id ? {...el, properties: {...el.properties, tags: {...el.properties.tags, today: !el.properties.tags.today}}} : el)})
+        console.log(tasks[id_List])
     }
     return (
         <div className="App">
@@ -80,12 +83,14 @@ function App() {
                 {todolists.map((el) =>
                     <Todolist
                         key={el.id}
+                        id_List={el.id}
                         tasks={tasks[el.id]}
                         title={el.title}
-                        addTask={(n) => addTask(el.id, n)}
+                        addTask={addTask}
                         deleteTask={(id_task) => deleteTask(el.id, id_task)}
                         deleteTodolist={() => deleteTodolist(el.id)}
                         makeDone ={(id_task)=>makeDone(el.id, id_task)}
+                        setForToday={(id_task)=>setForToday(el.id, id_task)}
                     />)
                 }
                 <NewTodolist addNew={addNewTodolist}/>
