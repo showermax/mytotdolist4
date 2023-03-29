@@ -41,16 +41,16 @@ function App() {
         ]
     )
     const addNewTodolist = () => {
-        let newID=v1()
+        let newID = v1()
         setTodolists([...todolists, {id: newID, title: 'New'}])
         setTasks({...tasks, [newID]: []})
     }
     const deleteTodolist = (id: string) => {
-    setTodolists(todolists.filter(el=>el.id!==id))
+        setTodolists(todolists.filter(el => el.id !== id))
         delete tasks[id]
     }
 
-    const addTask = (id: string,n:string) => {
+    const addTask = (id: string, n: string) => {
         setTasks({
             ...tasks,
             [id]: [...tasks[id], {
@@ -60,9 +60,12 @@ function App() {
                 properties: {priority: 'high', assignedTo: false}
             }]
         })
-      }
-    const deleteTask =(id_List: string, id_task:string)=>{
-        setTasks({...tasks, [id_List]: tasks[id_List].filter(el=>el.id!==id_task)})
+    }
+    const deleteTask = (id_List: string, id_task: string) => {
+        setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
+    }
+    const makeDone = (id_List: string, id_task: string)=>{
+        setTasks({...tasks, [id_List]: tasks[id_List].map(el=>el.id===id_task ? {...el, isDone: !el.isDone} : el)})
     }
     return (
         <div className="App">
@@ -70,12 +73,15 @@ function App() {
                 <img src={logo} className="App-logo" alt="logo"/>
             </header>
             <div className="todolists">
-                {todolists.map((el, i) =>
-                    <Todolist tasks={tasks[el.id]}
-                              title={el.title}
-                              addTask={(n) => addTask(el.id,n)}
-                              deleteTask={(id) => deleteTask(el.id, id)}
-                              deleteTodolist={() => deleteTodolist(el.id)}
+                {todolists.map((el) =>
+                    <Todolist
+                        key={el.id}
+                        tasks={tasks[el.id]}
+                        title={el.title}
+                        addTask={(n) => addTask(el.id, n)}
+                        deleteTask={(id_task) => deleteTask(el.id, id_task)}
+                        deleteTodolist={() => deleteTodolist(el.id)}
+                        makeDone ={(id_task)=>makeDone(el.id, id_task)}
                     />)
                 }
                 <NewTodolist addNew={addNewTodolist}/>

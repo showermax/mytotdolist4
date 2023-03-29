@@ -8,6 +8,7 @@ type PropsType = {
     addTask: (n: string) => void
     deleteTask: (id: string) => void
     deleteTodolist: ()=>void
+    makeDone: (id:string) => void
 }
 
 export type TaskType = {
@@ -48,7 +49,7 @@ export const Todolist = (props: PropsType) => {
                     <ol>
                         {props.tasks.map((el, i) =>
                             <li key={i}>
-                                <input type="checkbox"/>
+                                <input type="checkbox" checked={el.isDone} onChange={()=>props.makeDone(el.id)}/>
                                 {el.taskName}
                                 <SuperButton title='X' onClickCallBack={() => props.deleteTask(el.id)}/>
                             </li>)}
