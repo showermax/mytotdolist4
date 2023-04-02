@@ -50,6 +50,7 @@ function App() {
             {id: Done, title: 'Done'}
         ]
     )
+    // useEffect(()=>{setTasks(tasks)},[tasks])
     const addNewTodolist = () => {
         let newID = v1()
         setTodolists([...todolists, {id: newID, title: 'New'}])
@@ -70,8 +71,6 @@ function App() {
                 properties: {tags: {priority: 'normal', today: id_List === Today}, assignedTo: false}
             }]
         })
-        console.log(id_List)
-        console.log(Today)
     }
     const deleteTask = (id_List: string, id_task: string) => {
         setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
@@ -80,14 +79,18 @@ function App() {
         setTasks({...tasks, [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, isDone: !el.isDone} : el)})
     }
     const setForToday = (id_List: string, id: string) => {
-    const theTask = tasks[id_List].filter(el=>el.id===id)
-        addTask(Today,theTask[0].taskName)
+        setTasks({
+            ...tasks,
+            [Today]: [...tasks[Today], ...tasks[id_List].filter(el => el.id === id)],
+            [id_List]: tasks[id_List].filter(el => el.id !== id)
+        })
     }
+    console.log(tasks)
     return (
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo"/>
-                <div>`The todolists IDs are: Inbox - {Inbox}, Today - ${Today}`</div>
+                <div>`The todolists IDs are: Inbox - {Inbox}, Today - {Today}</div>
             </header>
             <div className="todolists">
                 {todolists.map((el) =>
@@ -109,4 +112,4 @@ function App() {
     );
 }
 
-    export default App;
+export default App;
