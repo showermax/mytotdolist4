@@ -9,7 +9,7 @@ import {NewTodolist} from "./Components/NewTodolist";
 function App() {
     const Inbox = 'todolistid-inbox'
     const Today = 'todolistid-today'
-    const Done = v1()
+    const Completed = v1()
     // list of tasks
     const [tasks, setTasks] = useState({
         [Inbox]: [
@@ -34,7 +34,7 @@ function App() {
                 properties: {tags: {priority: 'high', today: true}, assignedTo: false}
             },
         ],
-        [Done]: [
+        [Completed]: [
             {
                 id: v1(),
                 taskName: 'that is already done',
@@ -47,7 +47,7 @@ function App() {
     const [todolists, setTodolists] = useState([
             {id: Inbox, title: 'Inbox'},
             {id: Today, title: 'Today'},
-            {id: Done, title: 'Done'}
+            {id: Completed, title: 'Done'}
         ]
     )
     // useEffect(()=>{setTasks(tasks)},[tasks])
@@ -76,7 +76,14 @@ function App() {
         setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
     }
     const makeDone = (id_List: string, id_task: string) => {
-        setTasks({...tasks, [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, isDone: !el.isDone} : el)})
+        setTasks({...tasks,
+            [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, isDone: !el.isDone} : el),
+            [Completed]: [...tasks[Completed], {
+                id: v1(),
+                taskName: 'hi',
+                isDone: false,
+                properties: {tags: {priority: 'normal', today: false}, assignedTo: false}
+            }]})
     }
     const setForToday = (id_List: string, id: string) => {
         setTasks({
