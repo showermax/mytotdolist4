@@ -7,9 +7,9 @@ import {NewTodolist} from "./Components/NewTodolist";
 
 
 function App() {
-    const Inbox = 'todolistid-inbox'
-    const Today = 'todolistid-today'
-    const Completed = v1()
+    const Inbox:string = 'todolistid-inbox'
+    const Today:string = 'todolistid-today'
+    const Completed:string = 'todolistid-completed'
     // list of tasks
     const [tasks, setTasks] = useState({
         [Inbox]: [
@@ -41,7 +41,7 @@ function App() {
                 isDone: true,
                 properties: {tags: {priority: 'normal', today: false}, assignedTo: false}
             },
-        ]
+        ],
     })
     // list of todolists
     const [todolists, setTodolists] = useState([
@@ -75,15 +75,9 @@ function App() {
     const deleteTask = (id_List: string, id_task: string) => {
         setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
     }
-    const makeDone = (id_List: string, id_task: string) => {
+    const makeDone = (id_List: string, id_task: string, e: boolean) => {
         setTasks({...tasks,
-            [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, isDone: !el.isDone} : el),
-            [Completed]: [...tasks[Completed], {
-                id: v1(),
-                taskName: 'hi',
-                isDone: false,
-                properties: {tags: {priority: 'normal', today: false}, assignedTo: false}
-            }]})
+            [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, isDone: e} : el)})
     }
     const setForToday = (id_List: string, id: string) => {
         setTasks({
@@ -92,7 +86,9 @@ function App() {
             [id_List]: tasks[id_List].filter(el => el.id !== id)
         })
     }
-    console.log(tasks)
+    console.log(tasks[Completed])
+    console.log(tasks[Inbox])
+    console.log(tasks[Today])
     return (
         <div className="App">
             <header className="App-header">
@@ -109,7 +105,7 @@ function App() {
                         addTask={addTask}
                         deleteTask={(id_task) => deleteTask(el.id, id_task)}
                         deleteTodolist={() => deleteTodolist(el.id)}
-                        makeDone={(id_task) => makeDone(el.id, id_task)}
+                        makeDone={(id_task:string, e:boolean) => makeDone(el.id, id_task, e)}
                         setForToday={(id_task) => setForToday(el.id, id_task)}
                     />)
                 }

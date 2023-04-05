@@ -10,7 +10,7 @@ type PropsType = {
     setForToday: (id: string) => void
     deleteTask: (id: string) => void
     deleteTodolist: () => void
-    makeDone: (id: string) => void
+    makeDone: (id: string,e:boolean) => void
 }
 
 export type TaskType = {
@@ -51,7 +51,7 @@ export const Todolist = (props: PropsType) => {
                     <ol>
                         {props.tasks.map((el, i) =>
                             <li key={i}>
-                                <input type="checkbox" checked={el.isDone} onChange={() => props.makeDone(el.id)}/>
+                                <input type="checkbox" checked={el.isDone} onChange={(e: ChangeEvent<HTMLInputElement>) => props.makeDone(el.id,e.currentTarget.checked)}/>
                                 {el.taskName}
                                 <div>
                                     {(props.id_List === 'todolistid-inbox') && <SuperButton title='>' onClickCallBack={() => props.setForToday(el.id)}/>}
