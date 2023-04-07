@@ -41,7 +41,7 @@ export const Todolist = (props: PropsType) => {
     return (
         <div className="todolist">
             <div className="listwrapper">
-                <div>{props.title}</div>
+                <div><EditableSpan title={props.title}/></div>
                 <div className="input">
                     <SuperInput type="text" value={newTaskName} onChangeCallback={onChangeHandler}
                                 onKeyDownCallBack={onKeyDownHandler}/>
@@ -66,5 +66,17 @@ export const Todolist = (props: PropsType) => {
             </div>
         </div>
 
+    )
+}
+
+type EditableSpanPropsType ={
+    title?: string
+}
+export function EditableSpan (props: EditableSpanPropsType) {
+    return (
+        <div style={{'display': 'flex'}}>
+            <div><span>{props.title}</span></div>
+            <div><button>/</button></div>
+        </div>
     )
 }
