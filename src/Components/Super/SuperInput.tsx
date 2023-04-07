@@ -9,7 +9,7 @@ type PropsType ={
 export const SuperInput = (props: PropsType) => {
     return (
         <div>
-            <input type={props.type} value={props.value} onChange={props.onChangeCallback} onKeyDown={props.onKeyDownCallBack}/>
+            <input type={props.type} value={props.value} onChange={props.onChangeCallback} onKeyDown={props.onKeyDownCallBack} onBlur={props.onKeyDownCallBack}/>
         </div>
     );
 };

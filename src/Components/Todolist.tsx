@@ -10,7 +10,7 @@ type PropsType = {
     setForToday: (id: string) => void
     deleteTask: (id: string) => void
     deleteTodolist: () => void
-    makeDone: (id: string,e:boolean) => void
+    makeDone: (id: string, e: boolean) => void
 }
 
 export type TaskType = {
@@ -51,10 +51,12 @@ export const Todolist = (props: PropsType) => {
                     <ol>
                         {props.tasks.map((el, i) =>
                             <li key={i}>
-                                <input type="checkbox" checked={el.isDone} onChange={(e: ChangeEvent<HTMLInputElement>) => props.makeDone(el.id,e.currentTarget.checked)}/>
+                                <input type="checkbox" checked={el.isDone}
+                                       onChange={(e: ChangeEvent<HTMLInputElement>) => props.makeDone(el.id, e.currentTarget.checked)}/>
                                 <EditableSpan content={el.taskName}/>
                                 <div>
-                                    {(props.id_List === 'todolistid-inbox') && <SuperButton title='>' onClickCallBack={() => props.setForToday(el.id)}/>}
+                                    {(props.id_List === 'todolistid-inbox') &&
+                                        <SuperButton title='>' onClickCallBack={() => props.setForToday(el.id)}/>}
                                     <SuperButton title='X' onClickCallBack={() => props.deleteTask(el.id)}/>
                                 </div>
                             </li>)}
@@ -69,14 +71,17 @@ export const Todolist = (props: PropsType) => {
     )
 }
 
-type EditableSpanPropsType ={
+type EditableSpanPropsType = {
     content: string
 }
-export function EditableSpan (props: EditableSpanPropsType) {
+
+export function EditableSpan(props: EditableSpanPropsType) {
+    const [edit, setEdit] = useState(false)
     return (
         <div style={{'display': 'flex'}}>
-            <div><span>{props.content}</span></div>
-            <div><button>/</button></div>
+            {edit
+                ? <input type={'text'} onChange={onChangeHandler} onKeyDown={onKeyDownHandler}/>
+                : <span onDoubleClick={()=>{setEdit(true)}}>{props.content}</span>}
         </div>
     )
 }
