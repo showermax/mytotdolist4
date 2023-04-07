@@ -41,7 +41,7 @@ export const Todolist = (props: PropsType) => {
     return (
         <div className="todolist">
             <div className="listwrapper">
-                <div><EditableSpan title={props.title}/></div>
+                <div>{props.title}</div>
                 <div className="input">
                     <SuperInput type="text" value={newTaskName} onChangeCallback={onChangeHandler}
                                 onKeyDownCallBack={onKeyDownHandler}/>
@@ -52,7 +52,7 @@ export const Todolist = (props: PropsType) => {
                         {props.tasks.map((el, i) =>
                             <li key={i}>
                                 <input type="checkbox" checked={el.isDone} onChange={(e: ChangeEvent<HTMLInputElement>) => props.makeDone(el.id,e.currentTarget.checked)}/>
-                                {el.taskName}
+                                <EditableSpan content={el.taskName}/>
                                 <div>
                                     {(props.id_List === 'todolistid-inbox') && <SuperButton title='>' onClickCallBack={() => props.setForToday(el.id)}/>}
                                     <SuperButton title='X' onClickCallBack={() => props.deleteTask(el.id)}/>
@@ -70,12 +70,12 @@ export const Todolist = (props: PropsType) => {
 }
 
 type EditableSpanPropsType ={
-    title?: string
+    content: string
 }
 export function EditableSpan (props: EditableSpanPropsType) {
     return (
         <div style={{'display': 'flex'}}>
-            <div><span>{props.title}</span></div>
+            <div><span>{props.content}</span></div>
             <div><button>/</button></div>
         </div>
     )

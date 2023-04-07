@@ -59,6 +59,10 @@
 .todolist ol {
   text-align: left;
 }
+.todolist ol li{
+  display: flex;
+  align: top;
+}
 .deletetodolist img{
   width: 20px;
 }
