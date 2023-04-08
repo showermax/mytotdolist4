@@ -12,6 +12,7 @@ export function EditableSpan(props: EditableSpanPropsType) {
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewName(e.currentTarget.value)
     }
+    // if (newName.trim()==='') {setNewName(props.content)}
     const onKeyDownSetEditsHandler = (key: KeyboardEvent<HTMLInputElement>) => {
         if (key.key === 'Enter') {
              if (newName) {
