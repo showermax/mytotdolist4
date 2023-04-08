@@ -53,7 +53,7 @@ function App() {
     // useEffect(()=>{setTasks(tasks)},[tasks])
     const addNewTodolist = () => {
         let newID = v1()
-        setTodolists([...todolists, {id: newID, title: 'New'}])
+        setTodolists([...todolists, {id: newID, title: 'New List'}])
         setTasks({...tasks, [newID]: []})
     }
     const deleteTodolist = (id: string) => {
@@ -81,6 +81,9 @@ function App() {
     }
     const editTask = (id_List: string, id_task: string, s: string) =>{
         setTasks({...tasks, [id_List]: tasks[id_List].map(el=> el.id===id_task ? {...el, taskName: s}:el)})
+    }
+    const editTodolist = (id_List: string, s: string) =>{
+        setTodolists(todolists.map(el=> el.id===id_List ? {...el, title: s} : el))
     }
     const setForToday = (id_List: string, id: string) => {
         setTasks({
@@ -111,6 +114,7 @@ function App() {
                         makeDone={(id_task:string, e:boolean) => makeDone(el.id, id_task, e)}
                         setForToday={(id_task) => setForToday(el.id, id_task)}
                         editTask={(id_Task:string, s:string)=>editTask(el.id, id_Task,s)}
+                        editTodolist={(s:string)=>editTodolist(el.id, s)}
                     />)
                 }
                 <NewTodolist addNew={addNewTodolist}/>

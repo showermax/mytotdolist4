@@ -2,32 +2,37 @@ import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 
 type EditableSpanPropsType = {
     content: string
-    editTask: (s: string) => void
+    editContent: (s: string) => void
+    defaultState: boolean
 }
 
 export function EditableSpan(props: EditableSpanPropsType) {
-    const [edit, setEdit] = useState(false)
+    const [edit, setEdit] = useState(props.defaultState)
     const [newName, setNewName] = useState(props.content)
-    const [error,setError] = useState(false)
+    const [error, setError] = useState(false)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewName(e.currentTarget.value)
     }
-    // if (newName.trim()==='') {setNewName(props.content)}
+
     const onKeyDownSetEditsHandler = (key: KeyboardEvent<HTMLInputElement>) => {
         if (key.key === 'Enter') {
-             if (newName) {
-                 props.editTask(newName.trim())
-             }  else { setError(true)}
+            if (newName) {
+                props.editContent(newName.trim())
+            } else {
+                setError(true)
+            }
             setEdit(false)
         }
     }
     const setEditsHandler = () => {
         if (newName) {
-            props.editTask(newName.trim())
-        }  else { setError(true)}
+            props.editContent(newName.trim())
+        } else {
+            setError(true)
+        }
         setEdit(false)
     }
-    let typesmth=!newName && <div> type something </div>
+    let typesmth = !newName && <div> type something </div>
     return (
         <div style={{'display': 'flex'}}>
             {edit

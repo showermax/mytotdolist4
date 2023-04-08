@@ -7,13 +7,14 @@ import {EditableSpan} from "./EditableSpan";
 type PropsType = {
     tasks: TaskType[]
     id_List: string
-    title?: string
+    title: string
     addTask: (id_List: string, n: string) => void
     setForToday: (id: string) => void
     deleteTask: (id: string) => void
     deleteTodolist: () => void
     makeDone: (id: string, e: boolean) => void
     editTask: (id: string, s: string) => void
+    editTodolist: (s: string) => void
 }
 
 export type TaskType = {
@@ -44,7 +45,7 @@ export const Todolist = (props: PropsType) => {
     return (
         <div className="todolist">
             <div className="listwrapper">
-                <div>{props.title}</div>
+                <div className={'todolistTitle'}><EditableSpan content={props.title} editContent={props.editTodolist} defaultState={props.title === 'New List'} /></div>
                 <div className="input">
                     <SuperInput type="text" value={newTaskName} onChangeCallback={onChangeHandler}
                                 onKeyDownCallBack={onKeyDownHandler}/>
@@ -57,7 +58,7 @@ export const Todolist = (props: PropsType) => {
                                 <div className={'task'}><input type="checkbox" checked={el.isDone}
                                                                onChange={(e: ChangeEvent<HTMLInputElement>) => props.makeDone(el.id, e.currentTarget.checked)}/>
                                     <EditableSpan content={el.taskName}
-                                                  editTask={(s: string) => props.editTask(el.id, s)}/></div>
+                                                  editContent={(s: string) => props.editTask(el.id, s)} defaultState={false}/></div>
                                 <div>
                                     {(props.id_List === 'todolistid-inbox') &&
                                         <SuperButton title='>' onClickCallBack={() => props.setForToday(el.id)}/>}

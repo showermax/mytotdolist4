@@ -78,9 +78,7 @@
 .editableInput input {
   outline: none;
   border: none;
-
   box-sizing: border-box;
-
 }
 .editableInput input:focus,
 .editableInput input:active {
