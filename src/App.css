@@ -61,8 +61,32 @@
 }
 .todolist ol li{
   display: flex;
+  justify-content: space-between;
   align: top;
 }
 .deletetodolist img{
   width: 20px;
+}
+
+.editableInput{
+  display: flex;
+}
+.editableInput img{
+  max-height: 16px;
+}
+
+.editableInput input {
+  outline: none;
+  border: none;
+
+  box-sizing: border-box;
+
+}
+.editableInput input:focus,
+.editableInput input:active {
+  border-color: transparent;
+  border-bottom: 2px solid #1c87c9;
+}
+.task{
+  display: flex;
 }

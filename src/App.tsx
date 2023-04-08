@@ -79,6 +79,9 @@ function App() {
         setTasks({...tasks,
             [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, isDone: e} : el)})
     }
+    const editTask = (id_List: string, id_task: string, s: string) =>{
+        setTasks({...tasks, [id_List]: tasks[id_List].map(el=> el.id===id_task ? {...el, taskName: s}:el)})
+    }
     const setForToday = (id_List: string, id: string) => {
         setTasks({
             ...tasks,
@@ -107,6 +110,7 @@ function App() {
                         deleteTodolist={() => deleteTodolist(el.id)}
                         makeDone={(id_task:string, e:boolean) => makeDone(el.id, id_task, e)}
                         setForToday={(id_task) => setForToday(el.id, id_task)}
+                        editTask={(id_Task:string, s:string)=>editTask(el.id, id_Task,s)}
                     />)
                 }
                 <NewTodolist addNew={addNewTodolist}/>

@@ -1,6 +1,8 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {SuperButton} from "./Super/SuperButton";
 import {SuperInput} from "./Super/SuperInput";
+import {EditableSpan} from "./EditableSpan";
+
 
 type PropsType = {
     tasks: TaskType[]
@@ -11,6 +13,7 @@ type PropsType = {
     deleteTask: (id: string) => void
     deleteTodolist: () => void
     makeDone: (id: string, e: boolean) => void
+    editTask: (id: string, s: string) => void
 }
 
 export type TaskType = {
@@ -51,9 +54,10 @@ export const Todolist = (props: PropsType) => {
                     <ol>
                         {props.tasks.map((el, i) =>
                             <li key={i}>
-                                <input type="checkbox" checked={el.isDone}
-                                       onChange={(e: ChangeEvent<HTMLInputElement>) => props.makeDone(el.id, e.currentTarget.checked)}/>
-                                <EditableSpan content={el.taskName}/>
+                                <div className={'task'}><input type="checkbox" checked={el.isDone}
+                                                               onChange={(e: ChangeEvent<HTMLInputElement>) => props.makeDone(el.id, e.currentTarget.checked)}/>
+                                    <EditableSpan content={el.taskName}
+                                                  editTask={(s: string) => props.editTask(el.id, s)}/></div>
                                 <div>
                                     {(props.id_List === 'todolistid-inbox') &&
                                         <SuperButton title='>' onClickCallBack={() => props.setForToday(el.id)}/>}
@@ -71,17 +75,3 @@ export const Todolist = (props: PropsType) => {
     )
 }
 
-type EditableSpanPropsType = {
-    content: string
-}
-
-export function EditableSpan(props: EditableSpanPropsType) {
-    const [edit, setEdit] = useState(false)
-    return (
-        <div style={{'display': 'flex'}}>
-            {edit
-                ? <input type={'text'} onChange={onChangeHandler} onKeyDown={onKeyDownHandler}/>
-                : <span onDoubleClick={()=>{setEdit(true)}}>{props.content}</span>}
-        </div>
-    )
-}
