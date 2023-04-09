@@ -1,90 +1,106 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  height: 5vmin;
-  pointer-events: none;
+    height: 5vmin;
+    pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  background-color: #282c34;
-  height: 10vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-.input {
-  display: flex;
-  justify-content: space-around;
-}
-.todolists {
-  display:flex;
-  gap: 30px;
-  padding: 20px;
-  justify-content: space-between;
-}
-.todolist{
-  display:flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding:5px;
-  width: 300px;
-  border: 1px solid black;
-  border-radius: 10px;
-  min-height:200px;
-}
-.todolist ol {
-  text-align: left;
-}
-.todolist ol li{
-  display: flex;
-  justify-content: space-between;
-  align: top;
-}
-.deletetodolist img{
-  width: 20px;
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-.editableInput{
-  display: flex;
+.input {
+    display: flex;
+    justify-content: space-around;
 }
-.editableInput img{
-  max-height: 16px;
+
+.todolists {
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+.todolist {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px;
+    width: 300px;
+    border: 1px solid black;
+    border-radius: 10px;
+    min-height: 200px;
+}
+
+.todolistTitle {
+    display: flex;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bolder;
+}
+
+.todolist ol {
+    text-align: left;
+}
+
+.todolist ol li {
+    display: flex;
+    justify-content: space-between;
+    align: top;
+}
+
+.deletetodolist img {
+    width: 20px;
+}
+
+.editableInput {
+    display: flex;
+}
+
+.editableInput img {
+    max-height: 16px;
 }
 
 .editableInput input {
-  outline: none;
-  border: none;
-  box-sizing: border-box;
+    outline: none;
+    border: none;
+    box-sizing: border-box;
 }
+
 .editableInput input:focus,
 .editableInput input:active {
-  border-color: transparent;
-  border-bottom: 2px solid #1c87c9;
+    border-color: transparent;
+    border-bottom: 2px solid #1c87c9;
 }
-.task{
-  display: flex;
+
+.task {
+    display: flex;
 }

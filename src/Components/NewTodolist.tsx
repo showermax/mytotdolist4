@@ -6,8 +6,7 @@ type PropsType ={
 export function NewTodolist (props:PropsType ){
     return(
         <div className='todolist'>
-            <input type="text" />
-            <div style={{fontSize: '100px'}} onClick={()=>props.addNew()}>+</div>
+            <div style={{fontSize: '100px',opacity: '0.5', cursor:'pointer'}} onClick={()=>props.addNew()}>+</div>
         </div>
     )
 }

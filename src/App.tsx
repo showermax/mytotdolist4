@@ -7,9 +7,9 @@ import {NewTodolist} from "./Components/NewTodolist";
 
 
 function App() {
-    const Inbox:string = 'todolistid-inbox'
-    const Today:string = 'todolistid-today'
-    const Completed:string = 'todolistid-completed'
+    const Inbox: string = 'todolistid-inbox'
+    const Today: string = 'todolistid-today'
+    const Completed: string = 'todolistid-completed'
     // list of tasks
     const [tasks, setTasks] = useState({
         [Inbox]: [
@@ -17,13 +17,13 @@ function App() {
                 id: v1(),
                 taskName: 'initial task',
                 isDone: false,
-                properties: {tags: {priority: 'low', today: false}, assignedTo: false}
+                properties: {tags: {priority: 'low', today: false}, parent: Inbox}
             },
             {
                 id: v1(),
                 taskName: 'learn how to use',
                 isDone: false,
-                properties: {tags: {priority: 'high', today: false}, assignedTo: false}
+                properties: {tags: {priority: 'high', today: false}, parent: Inbox}
             }
         ],
         [Today]: [
@@ -31,7 +31,7 @@ function App() {
                 id: v1(),
                 taskName: 'this task you should do today',
                 isDone: false,
-                properties: {tags: {priority: 'high', today: true}, assignedTo: false}
+                properties: {tags: {priority: 'high', today: true}, parent: Today}
             },
         ],
         [Completed]: [
@@ -39,7 +39,7 @@ function App() {
                 id: v1(),
                 taskName: 'that is already done',
                 isDone: true,
-                properties: {tags: {priority: 'normal', today: false}, assignedTo: false}
+                properties: {tags: {priority: 'normal', today: false}, parent: Completed}
             },
         ],
     })
@@ -68,7 +68,7 @@ function App() {
                 id: v1(),
                 taskName: n,
                 isDone: false,
-                properties: {tags: {priority: 'normal', today: id_List === Today}, assignedTo: false}
+                properties: {tags: {priority: 'normal', today: id_List === Today}, parent: id_List}
             }]
         })
     }
@@ -76,14 +76,35 @@ function App() {
         setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
     }
     const makeDone = (id_List: string, id_task: string, e: boolean) => {
-        setTasks({...tasks,
-            [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, isDone: e} : el)})
+        const parentListId = tasks[id_List].filter(el => el.id == id_task)[0].properties.parent; // достаем id листа, в котором таска создалась
+        (id_List !== Completed) ? setTasks({
+                ...tasks,
+                [Completed]: [...tasks[Completed], ...tasks[id_List].filter(el => el.id === id_task).map(el => ({
+                    ...el,
+                    isDone: e
+                }))],
+
+                [id_List]: tasks[id_List].filter(el => el.id !== id_task),
+
+            })
+            :
+            setTasks({
+                ...tasks,
+                [Completed]: tasks[id_List].filter(el => el.id !== id_task).map(el => ({...el, isDone: true})),
+                [parentListId]: [...tasks[parentListId], ...tasks[id_List].filter(el => el.id === id_task).map(el => ({
+                    ...el,
+                    isDone: e
+                }))],
+
+            })
+
     }
-    const editTask = (id_List: string, id_task: string, s: string) =>{
-        setTasks({...tasks, [id_List]: tasks[id_List].map(el=> el.id===id_task ? {...el, taskName: s}:el)})
+
+    const editTask = (id_List: string, id_task: string, s: string) => {
+        setTasks({...tasks, [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, taskName: s} : el)})
     }
-    const editTodolist = (id_List: string, s: string) =>{
-        setTodolists(todolists.map(el=> el.id===id_List ? {...el, title: s} : el))
+    const editTodolist = (id_List: string, s: string) => {
+        setTodolists(todolists.map(el => el.id === id_List ? {...el, title: s} : el))
     }
     const setForToday = (id_List: string, id: string) => {
         setTasks({
@@ -92,9 +113,7 @@ function App() {
             [id_List]: tasks[id_List].filter(el => el.id !== id)
         })
     }
-    console.log(tasks[Completed])
-    console.log(tasks[Inbox])
-    console.log(tasks[Today])
+
     return (
         <div className="App">
             <header className="App-header">
@@ -111,10 +130,10 @@ function App() {
                         addTask={addTask}
                         deleteTask={(id_task) => deleteTask(el.id, id_task)}
                         deleteTodolist={() => deleteTodolist(el.id)}
-                        makeDone={(id_task:string, e:boolean) => makeDone(el.id, id_task, e)}
+                        makeDone={(id_task: string, e: boolean) => makeDone(el.id, id_task, e)}
                         setForToday={(id_task) => setForToday(el.id, id_task)}
-                        editTask={(id_Task:string, s:string)=>editTask(el.id, id_Task,s)}
-                        editTodolist={(s:string)=>editTodolist(el.id, s)}
+                        editTask={(id_Task: string, s: string) => editTask(el.id, id_Task, s)}
+                        editTodolist={(s: string) => editTodolist(el.id, s)}
                     />)
                 }
                 <NewTodolist addNew={addNewTodolist}/>

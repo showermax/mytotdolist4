@@ -23,7 +23,7 @@ export type TaskType = {
     isDone: boolean
     properties: {
         tags: { priority: string, today: boolean }
-        assignedTo: boolean
+        parent: string
     }
 }
 export const Todolist = (props: PropsType) => {
