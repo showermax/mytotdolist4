@@ -4,15 +4,16 @@ import './App.css';
 import {v1} from "uuid";
 import {TaskType, Todolist} from "./Components/Todolist";
 import {NewTodolist} from "./Components/NewTodolist";
-import {TasksReducer, addTaskAC} from "./Components/Reducers/TasksReducer";
+import {TasksReducer, addTaskAC, deleteTaskAC, makeDoneAC} from "./Components/Reducers/TasksReducer";
 
 export type TasksType = {
     [key:string]: TaskType[]
 }
+export const Inbox: string = 'todolistid-inbox'
+export const Today: string = 'todolistid-today'
+export const Completed: string = 'todolistid-completed'
 function App() {
-    const Inbox: string = 'todolistid-inbox'
-    const Today: string = 'todolistid-today'
-    const Completed: string = 'todolistid-completed'
+
     // list of tasks
     // const [tasks, setTasks] = useState({
     //     [Inbox]: [
@@ -108,10 +109,12 @@ function App() {
         //     }]
         // })
     }
-    const deleteTask = (id_List: string, id_task: string) => {
+    const deleteTask = (id_List: string, id_Task: string) => {
+        tasksDispatch(deleteTaskAC(id_List,id_Task))
         // setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
     }
     const makeDone = (id_List: string, id_task: string, e: boolean) => {
+        tasksDispatch(makeDoneAC(id_List,id_task,e))
         // const parentListId = tasks[id_List].filter(el => el.id == id_task)[0].properties.parent; // достаем id листа, в котором таска создалась
         // (id_List !== Completed) ? setTasks({
         //         ...tasks,
