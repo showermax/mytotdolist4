@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {Completed, TasksType} from "../../App";
+import {Completed, TasksType, Today} from "../../App";
 
 export function TasksReducer (state: TasksType, action: any) {
     switch (action.type) {
@@ -10,7 +10,7 @@ export function TasksReducer (state: TasksType, action: any) {
                     id: v1(),
                     taskName: action.payload.name,
                     isDone: false,
-                    properties: {tags: {priority: 'normal', today: action.payload.id_List === 'Today'}, parent: action.payload.id_List}
+                    properties: {tags: {priority: 'normal', today: action.payload.id_List === Today}, parent: action.payload.id_List}
                 }]
             }
         }
@@ -20,7 +20,6 @@ export function TasksReducer (state: TasksType, action: any) {
         case 'MAKE-DONE':{
             const parentListId = state[action.payload.id_List].filter(el => el.id == action.payload.id_Task)[0].properties.parent; // достаем id листа, в котором таска создалась
             return (
-
                 (action.payload.id_List !== Completed) ? {
                     ...state,
                     [Completed]: [...state[Completed], ...state[action.payload.id_List].filter(el => el.id === action.payload.id_Task).map(el => ({
@@ -41,8 +40,10 @@ export function TasksReducer (state: TasksType, action: any) {
                     }))],
 
                 }
-
         )
+        }
+        case 'EDIT-TASK': {
+            return {...state,[action.payload.id_List]:state[action.payload.id_List].map(el=>el.id===action.payload.id_Task ? {...el, taskName: action.payload.s} : el) }
         }
         default: return state
     }
@@ -67,4 +68,11 @@ export const makeDoneAC=(id_List: string, id_Task: string, e:boolean) => {
             e
         }
     } as const
+}
+
+export const editTaskAC = (id_List: string, id_Task: string, s: string) => {
+    return {
+        type: 'EDIT-TASK',
+        payload: {id_List, id_Task, s}
+    }
 }

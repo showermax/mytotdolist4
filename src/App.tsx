@@ -4,7 +4,7 @@ import './App.css';
 import {v1} from "uuid";
 import {TaskType, Todolist} from "./Components/Todolist";
 import {NewTodolist} from "./Components/NewTodolist";
-import {TasksReducer, addTaskAC, deleteTaskAC, makeDoneAC} from "./Components/Reducers/TasksReducer";
+import {TasksReducer, addTaskAC, deleteTaskAC, makeDoneAC, editTaskAC} from "./Components/Reducers/TasksReducer";
 
 export type TasksType = {
     [key:string]: TaskType[]
@@ -71,12 +71,7 @@ function App() {
             },
         ],
         [Completed]: [
-            {
-                id: v1(),
-                taskName: 'that is already done',
-                isDone: true,
-                properties: {tags: {priority: 'normal', today: false}, parent: Completed}
-            },
+
         ],
     })
     // list of todolists
@@ -139,7 +134,8 @@ function App() {
 
     }
 
-    const editTask = (id_List: string, id_task: string, s: string) => {
+    const editTask = (id_List: string, id_Task: string, s: string) => {
+        tasksDispatch(editTaskAC(id_List,id_Task,s))
         // setTasks({...tasks, [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, taskName: s} : el)})
     }
     const editTodolist = (id_List: string, s: string) => {
