@@ -1,17 +1,52 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {v1} from "uuid";
-import {Todolist} from "./Components/Todolist";
+import {TaskType, Todolist} from "./Components/Todolist";
 import {NewTodolist} from "./Components/NewTodolist";
+import {TasksReducer, addTaskAC} from "./Components/Reducers/TasksReducer";
 
-
+export type TasksType = {
+    [key:string]: TaskType[]
+}
 function App() {
     const Inbox: string = 'todolistid-inbox'
     const Today: string = 'todolistid-today'
     const Completed: string = 'todolistid-completed'
     // list of tasks
-    const [tasks, setTasks] = useState({
+    // const [tasks, setTasks] = useState({
+    //     [Inbox]: [
+    //         {
+    //             id: v1(),
+    //             taskName: 'initial task',
+    //             isDone: false,
+    //             properties: {tags: {priority: 'low', today: false}, parent: Inbox}
+    //         },
+    //         {
+    //             id: v1(),
+    //             taskName: 'learn how to use',
+    //             isDone: false,
+    //             properties: {tags: {priority: 'high', today: false}, parent: Inbox}
+    //         }
+    //     ],
+    //     [Today]: [
+    //         {
+    //             id: v1(),
+    //             taskName: 'this task you should do today',
+    //             isDone: false,
+    //             properties: {tags: {priority: 'high', today: true}, parent: Today}
+    //         },
+    //     ],
+    //     [Completed]: [
+    //         {
+    //             id: v1(),
+    //             taskName: 'that is already done',
+    //             isDone: true,
+    //             properties: {tags: {priority: 'normal', today: false}, parent: Completed}
+    //         },
+    //     ],
+    // })
+    const [tasks, tasksDispatch] = useReducer(TasksReducer,{
         [Inbox]: [
             {
                 id: v1(),
@@ -54,64 +89,65 @@ function App() {
     const addNewTodolist = () => {
         let newID = v1()
         setTodolists([...todolists, {id: newID, title: 'New List'}])
-        setTasks({...tasks, [newID]: []})
+        // setTasks({...tasks, [newID]: []})
     }
     const deleteTodolist = (id: string) => {
         setTodolists(todolists.filter(el => el.id !== id))
         delete tasks[id]
     }
 
-    const addTask = (id_List: string, n: string) => {
-        setTasks({
-            ...tasks,
-            [id_List]: [...tasks[id_List], {
-                id: v1(),
-                taskName: n,
-                isDone: false,
-                properties: {tags: {priority: 'normal', today: id_List === Today}, parent: id_List}
-            }]
-        })
+    const addTask = (id_List: string, name: string) => {
+        tasksDispatch(addTaskAC(id_List, name))
+        // setTasks({
+        //     ...tasks,
+        //     [id_List]: [...tasks[id_List], {
+        //         id: v1(),
+        //         taskName: name,
+        //         isDone: false,
+        //         properties: {tags: {priority: 'normal', today: id_List === Today}, parent: id_List}
+        //     }]
+        // })
     }
     const deleteTask = (id_List: string, id_task: string) => {
-        setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
+        // setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
     }
     const makeDone = (id_List: string, id_task: string, e: boolean) => {
-        const parentListId = tasks[id_List].filter(el => el.id == id_task)[0].properties.parent; // достаем id листа, в котором таска создалась
-        (id_List !== Completed) ? setTasks({
-                ...tasks,
-                [Completed]: [...tasks[Completed], ...tasks[id_List].filter(el => el.id === id_task).map(el => ({
-                    ...el,
-                    isDone: e
-                }))],
-
-                [id_List]: tasks[id_List].filter(el => el.id !== id_task),
-
-            })
-            :
-            setTasks({
-                ...tasks,
-                [Completed]: tasks[id_List].filter(el => el.id !== id_task).map(el => ({...el, isDone: true})),
-                [parentListId]: [...tasks[parentListId], ...tasks[id_List].filter(el => el.id === id_task).map(el => ({
-                    ...el,
-                    isDone: e
-                }))],
-
-            })
+        // const parentListId = tasks[id_List].filter(el => el.id == id_task)[0].properties.parent; // достаем id листа, в котором таска создалась
+        // (id_List !== Completed) ? setTasks({
+        //         ...tasks,
+        //         [Completed]: [...tasks[Completed], ...tasks[id_List].filter(el => el.id === id_task).map(el => ({
+        //             ...el,
+        //             isDone: e
+        //         }))],
+        //
+        //         [id_List]: tasks[id_List].filter(el => el.id !== id_task),
+        //
+        //     })
+        //     :
+        //     setTasks({
+        //         ...tasks,
+        //         [Completed]: tasks[id_List].filter(el => el.id !== id_task).map(el => ({...el, isDone: true})),
+        //         [parentListId]: [...tasks[parentListId], ...tasks[id_List].filter(el => el.id === id_task).map(el => ({
+        //             ...el,
+        //             isDone: e
+        //         }))],
+        //
+        //     })
 
     }
 
     const editTask = (id_List: string, id_task: string, s: string) => {
-        setTasks({...tasks, [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, taskName: s} : el)})
+        // setTasks({...tasks, [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, taskName: s} : el)})
     }
     const editTodolist = (id_List: string, s: string) => {
         setTodolists(todolists.map(el => el.id === id_List ? {...el, title: s} : el))
     }
     const setForToday = (id_List: string, id: string) => {
-        setTasks({
-            ...tasks,
-            [Today]: [...tasks[Today], ...tasks[id_List].filter(el => el.id === id)],
-            [id_List]: tasks[id_List].filter(el => el.id !== id)
-        })
+        // setTasks({
+        //     ...tasks,
+        //     [Today]: [...tasks[Today], ...tasks[id_List].filter(el => el.id === id)],
+        //     [id_List]: tasks[id_List].filter(el => el.id !== id)
+        // })
     }
 
     return (
