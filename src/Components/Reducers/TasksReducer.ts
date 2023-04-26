@@ -45,6 +45,9 @@ export function TasksReducer (state: TasksType, action: any) {
         case 'EDIT-TASK': {
             return {...state,[action.payload.id_List]:state[action.payload.id_List].map(el=>el.id===action.payload.id_Task ? {...el, taskName: action.payload.s} : el) }
         }
+        case 'ADD-TODOLIST': {
+            return {...state,[action.payload.newID]:[] }
+        }
         default: return state
     }
 }

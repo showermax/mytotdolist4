@@ -11,8 +11,7 @@ switch (action.type){
 type ActionsType = addNewTodolistACType
 
 type addNewTodolistACType = ReturnType<typeof addNewTodolistAC>
-export const addNewTodolistAC = (id)=>{
-    let id=v1()
+export const addNewTodolistAC = (id:string)=>{
     return {
         type: 'ADD-TODOLIST',
         payload: {id}

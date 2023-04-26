@@ -93,7 +93,7 @@ const [todolists,todolistsDispatch]=useReducer(TodolistsReducer, [
         // setTodolists([...todolists, {id: newID, title: 'New List'}])
         // // setTasks({...tasks, [newID]: []})
         todolistsDispatch(addNewTodolistAC(newID))
-        todolistsDispatch(addNewTodolistAC(newID))
+        tasksDispatch({type:'ADD-TODOLIST',payload: {newID}})
     }
 
     const deleteTodolist = (id: string) => {
