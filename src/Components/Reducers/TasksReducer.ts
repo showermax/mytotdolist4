@@ -56,7 +56,7 @@ export const addTaskAC = (id_List: string, name:string)=>{
             id_List: id_List,
             name: name
         }
-    } as const
+    } //as const
 }
 export const deleteTaskAC = (id_List:string, id_Task:string) => ({type:'DELETE-TASK', payload: {id_List, id_Task}} as const)
 export const makeDoneAC=(id_List: string, id_Task: string, e:boolean) => {
@@ -67,7 +67,7 @@ export const makeDoneAC=(id_List: string, id_Task: string, e:boolean) => {
             id_Task,
             e
         }
-    } as const
+    } //as const
 }
 
 export const editTaskAC = (id_List: string, id_Task: string, s: string) => {

@@ -5,10 +5,12 @@ import {v1} from "uuid";
 import {TaskType, Todolist} from "./Components/Todolist";
 import {NewTodolist} from "./Components/NewTodolist";
 import {TasksReducer, addTaskAC, deleteTaskAC, makeDoneAC, editTaskAC} from "./Components/Reducers/TasksReducer";
+import {addNewTodolistAC, TodolistsReducer} from "./Components/Reducers/TodolistsReducer";
 
 export type TasksType = {
     [key:string]: TaskType[]
 }
+export type TodolistsType= Array<{id: string, title:string}>
 export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
 export const Completed: string = 'todolistid-completed'
@@ -75,21 +77,28 @@ function App() {
         ],
     })
     // list of todolists
-    const [todolists, setTodolists] = useState([
+    // const [todolists, setTodolists] = useState([
+    //         {id: Inbox, title: 'Inbox'},
+    //         {id: Today, title: 'Today'},
+    //         {id: Completed, title: 'Done'}
+    //     ]
+    // )
+const [todolists,todolistsDispatch]=useReducer(TodolistsReducer, [
             {id: Inbox, title: 'Inbox'},
             {id: Today, title: 'Today'},
             {id: Completed, title: 'Done'}
-        ]
-    )
-    // useEffect(()=>{setTasks(tasks)},[tasks])
+        ])
     const addNewTodolist = () => {
         let newID = v1()
-        setTodolists([...todolists, {id: newID, title: 'New List'}])
-        // setTasks({...tasks, [newID]: []})
+        // setTodolists([...todolists, {id: newID, title: 'New List'}])
+        // // setTasks({...tasks, [newID]: []})
+        todolistsDispatch(addNewTodolistAC(newID))
+        todolistsDispatch(addNewTodolistAC(newID))
     }
+
     const deleteTodolist = (id: string) => {
-        setTodolists(todolists.filter(el => el.id !== id))
-        delete tasks[id]
+        // setTodolists(todolists.filter(el => el.id !== id))
+        // delete tasks[id]
     }
 
     const addTask = (id_List: string, name: string) => {
@@ -139,7 +148,7 @@ function App() {
         // setTasks({...tasks, [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, taskName: s} : el)})
     }
     const editTodolist = (id_List: string, s: string) => {
-        setTodolists(todolists.map(el => el.id === id_List ? {...el, title: s} : el))
+        // setTodolists(todolists.map(el => el.id === id_List ? {...el, title: s} : el))
     }
     const setForToday = (id_List: string, id: string) => {
         // setTasks({
