@@ -2,6 +2,7 @@ import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {SuperButton} from "./Super/SuperButton";
 import {SuperInput} from "./Super/SuperInput";
 import {EditableSpan} from "./EditableSpan";
+import {Completed} from "../App";
 
 
 type PropsType = {
@@ -45,12 +46,14 @@ export const Todolist = (props: PropsType) => {
     return (
         <div className="todolist">
             <div className="listwrapper">
-                <div className={'todolistTitle'}><EditableSpan content={props.title} editContent={props.editTodolist} defaultState={props.title === 'New List'} /></div>
-                <div className="input">
+                <div className={'todolistTitle'}><EditableSpan content={props.title} editContent={(s: string)=>props.editTodolist(s)}
+                                                               defaultState={props.title === 'New List'}/></div>
+                {props.id_List!==Completed && <div className="input">
                     <SuperInput type="text" value={newTaskName} onChangeCallback={onChangeHandler}
                                 onKeyDownCallBack={onKeyDownHandler}/>
-                    <SuperButton title='Add' onClickCallBack={() => addTaskHandler(newTaskName)}/>
-                </div>
+                    <SuperButton title='Add' onClickCallBack={() => addTaskHandler(newTaskName)}
+                                 disabled={!newTaskName}/>
+                </div>}
                 <div className="list">
                     <ol>
                         {props.tasks.map((el, i) =>
@@ -58,7 +61,8 @@ export const Todolist = (props: PropsType) => {
                                 <div className={'task'}><input type="checkbox" checked={el.isDone}
                                                                onChange={(e: ChangeEvent<HTMLInputElement>) => props.makeDone(el.id, e.currentTarget.checked)}/>
                                     <EditableSpan content={el.taskName}
-                                                  editContent={(s: string) => props.editTask(el.id, s)} defaultState={false}/></div>
+                                                  editContent={(s: string) => props.editTask(el.id, s)}
+                                                  defaultState={false}/></div>
                                 <div>
                                     {(props.id_List === 'todolistid-inbox') &&
                                         <SuperButton title='>' onClickCallBack={() => props.setForToday(el.id)}/>}

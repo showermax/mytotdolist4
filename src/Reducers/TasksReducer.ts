@@ -1,14 +1,16 @@
 import {v1} from "uuid";
-import {Completed, TasksType, Today} from "../../App";
+import {Completed, TasksType, Today} from "../App";
+import {addNewTodolistAC, deleteTodolistAC} from "./TodolistsReducer";
 
-export function TasksReducer (state: TasksType, action: any) {
+
+export function TasksReducer (state: TasksType, action: ActionsType) {
     switch (action.type) {
         case 'ADD-TASK': {
             return {
                 ...state,
                 [action.payload.id_List]: [...state[action.payload.id_List], {
                     id: v1(),
-                    taskName: action.payload.name,
+                    taskName:action.payload.name,
                     isDone: false,
                     properties: {tags: {priority: 'normal', today: action.payload.id_List === Today}, parent: action.payload.id_List}
                 }]
@@ -46,21 +48,26 @@ export function TasksReducer (state: TasksType, action: any) {
             return {...state,[action.payload.id_List]:state[action.payload.id_List].map(el=>el.id===action.payload.id_Task ? {...el, taskName: action.payload.s} : el) }
         }
         case 'ADD-TODOLIST': {
-            return {...state,[action.payload.newID]:[] }
+            return {...state,[action.payload.id]:[] }
+        }
+        case 'DELETE-TODOLIST': {
+            delete state[action.payload.id]
+            return state
         }
         default: return state
     }
 }
-
-export const addTaskAC = (id_List: string, name:string)=>{
+type ActionsType = ReturnType<typeof addTaskAC> | ReturnType<typeof deleteTaskAC> | ReturnType<typeof makeDoneAC>| ReturnType<typeof editTaskAC>| ReturnType<typeof deleteTodolistAC> | ReturnType<typeof addNewTodolistAC>
+export const addTaskAC = (id_List: string, title:string)=>{
     return {
         type: 'ADD-TASK',
         payload:{
             id_List: id_List,
-            name: name
+            name: title
         }
-    } //as const
+    } as const
 }
+
 export const deleteTaskAC = (id_List:string, id_Task:string) => ({type:'DELETE-TASK', payload: {id_List, id_Task}} as const)
 export const makeDoneAC=(id_List: string, id_Task: string, e:boolean) => {
     return {
@@ -70,12 +77,13 @@ export const makeDoneAC=(id_List: string, id_Task: string, e:boolean) => {
             id_Task,
             e
         }
-    } //as const
+    } as const
 }
 
 export const editTaskAC = (id_List: string, id_Task: string, s: string) => {
     return {
         type: 'EDIT-TASK',
         payload: {id_List, id_Task, s}
-    }
+    } as const
 }
+

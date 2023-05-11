@@ -32,19 +32,17 @@ export function EditableSpan(props: EditableSpanPropsType) {
         }
         setEdit(false)
     }
-    let typesmth = !newName && <div> type something </div>
     return (
         <div style={{'display': 'flex'}}>
             {edit
                 ?
-                <>
                     <div className={'editableInput'} onBlur={setEditsHandler}>
                         <input type={'text'} value={newName} onChange={onChangeHandler}
+                               placeholder={'type something...'}
                                onKeyDown={onKeyDownSetEditsHandler}
                                autoFocus/>
                         <img onClick={setEditsHandler} src='/img/done_1.svg' alt={'edit'}/>
                     </div>
-                    {typesmth}</>
                 :
                 <span onDoubleClick={() => {
                     setEdit(true)
