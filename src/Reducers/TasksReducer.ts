@@ -1,9 +1,39 @@
 import {v1} from "uuid";
-import {Completed, TasksType, Today} from "../App";
+import {TasksType} from "../ReduxApp";
 import {addNewTodolistAC, deleteTodolistAC} from "./TodolistsReducer";
 
+export const Inbox: string = 'todolistid-inbox'
+export const Today: string = 'todolistid-today'
+export const Completed: string = 'todolistid-completed'
+const InitialState = {
+    [Inbox]: [
+        {
+            id: v1(),
+            taskName: 'initial task',
+            isDone: false,
+            properties: {tags: {priority: 'low', today: false}, parent: Inbox}
+        },
+        {
+            id: v1(),
+            taskName: 'learn how to use',
+            isDone: false,
+            properties: {tags: {priority: 'high', today: false}, parent: Inbox}
+        }
+    ],
+    [Today]: [
+        {
+            id: v1(),
+            taskName: 'this task you should do today',
+            isDone: false,
+            properties: {tags: {priority: 'high', today: true}, parent: Today}
+        },
+    ],
+    [Completed]: [
 
-export function TasksReducer (state: TasksType, action: ActionsType) {
+    ],
+}
+
+export function TasksReducer (state: TasksType=InitialState, action: ActionsType) {
     switch (action.type) {
         case 'ADD-TASK': {
             return {

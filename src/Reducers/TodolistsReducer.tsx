@@ -1,7 +1,11 @@
 import React from 'react';
-import {TodolistsType} from "../App";
+
 import {v1} from "uuid";
-import {Completed, Inbox, Today} from "../ReduxApp";
+import {TodolistsType} from "../ReduxApp";
+
+export const Inbox: string = 'todolistid-inbox'
+export const Today: string = 'todolistid-today'
+export const Completed: string = 'todolistid-completed'
 
 const InitialState = [
             {id: Inbox, title: 'Inbox'},

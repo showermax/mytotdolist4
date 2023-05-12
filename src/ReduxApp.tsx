@@ -4,7 +4,7 @@ import './App.css';
 import {v1} from "uuid";
 import {TaskType, Todolist} from "./Components/Todolist";
 import {NewTodolist} from "./Components/NewTodolist";
-import {TasksReducer, addTaskAC, deleteTaskAC, makeDoneAC, editTaskAC} from "./Reducers/TasksReducer";
+import {TasksReducer, addTaskAC, deleteTaskAC, makeDoneAC, editTaskAC, setForTodayAC} from "./Reducers/TasksReducer";
 import {
     addNewTodolistAC,
     deleteTodolistAC,
@@ -30,15 +30,11 @@ function App() {
 
     const addNewTodolist = () => {
         let newID = v1()
-        // setTodolists([...todolists, {id: newID, title: 'New List'}])
-        // // setTasks({...tasks, [newID]: []})
         dispatch(addNewTodolistAC(newID))
 
     }
 
     const deleteTodolist = (id: string) => {
-        // setTodolists(todolists.filter(el => el.id !== id))
-        // delete tasks[id]
         dispatch(deleteTodolistAC(id))
     }
 
@@ -47,7 +43,6 @@ function App() {
     }
     const deleteTask = (id_List: string, id_Task: string) => {
         dispatch(deleteTaskAC(id_List,id_Task))
-        // setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
     }
     const makeDone = (id_List: string, id_task: string, e: boolean) => {
         dispatch(makeDoneAC(id_List,id_task,e))
@@ -61,11 +56,7 @@ function App() {
         dispatch(editTodolistAC(id_List,s))
     }
     const setForToday = (id_List: string, id: string) => {
-        // setTasks({
-        //     ...tasks,
-        //     [Today]: [...tasks[Today], ...tasks[id_List].filter(el => el.id === id)],
-        //     [id_List]: tasks[id_List].filter(el => el.id !== id)
-        // })
+        dispatch(setForTodayAC(id_List,id))
     }
 
     return (
