@@ -47,6 +47,9 @@ export function TasksReducer (state: TasksType, action: ActionsType) {
         case 'EDIT-TASK': {
             return {...state,[action.payload.id_List]:state[action.payload.id_List].map(el=>el.id===action.payload.id_Task ? {...el, taskName: action.payload.s} : el) }
         }
+        case 'SET-FOR-TODAY':{
+            return {...state, [Today]: [...state[Today], ...state[action.payload.id_List].filter(el => el.id === action.payload.id_Task)], [action.payload.id_List]: state[action.payload.id_List].filter(el => el.id !== action.payload.id_Task)}
+        }
         case 'ADD-TODOLIST': {
             return {...state,[action.payload.id]:[] }
         }
@@ -57,7 +60,7 @@ export function TasksReducer (state: TasksType, action: ActionsType) {
         default: return state
     }
 }
-type ActionsType = ReturnType<typeof addTaskAC> | ReturnType<typeof deleteTaskAC> | ReturnType<typeof makeDoneAC>| ReturnType<typeof editTaskAC>| ReturnType<typeof deleteTodolistAC> | ReturnType<typeof addNewTodolistAC>
+type ActionsType = ReturnType<typeof addTaskAC> | ReturnType<typeof deleteTaskAC> | ReturnType<typeof makeDoneAC>| ReturnType<typeof editTaskAC>| ReturnType<typeof deleteTodolistAC> | ReturnType<typeof addNewTodolistAC> | ReturnType<typeof setForTodayAC>
 export const addTaskAC = (id_List: string, title:string)=>{
     return {
         type: 'ADD-TASK',
@@ -84,6 +87,15 @@ export const editTaskAC = (id_List: string, id_Task: string, s: string) => {
     return {
         type: 'EDIT-TASK',
         payload: {id_List, id_Task, s}
+    } as const
+}
+export const setForTodayAC=(id_List: string, id_Task: string) => {
+    return {
+        type: 'SET-FOR-TODAY',
+        payload: {
+            id_List,
+            id_Task,
+        }
     } as const
 }
 

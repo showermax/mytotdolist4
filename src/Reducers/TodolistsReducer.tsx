@@ -1,7 +1,13 @@
 import React from 'react';
 import {TodolistsType} from "../App";
 import {v1} from "uuid";
+import {Completed, Inbox, Today} from "../ReduxApp";
 
+const InitialState = [
+            {id: Inbox, title: 'Inbox'},
+            {id: Today, title: 'Today'},
+            {id: Completed, title: 'Done'}
+        ]
 export const TodolistsReducer = (state: TodolistsType, action:ActionsType) => {
 switch (action.type){
     case 'ADD-TODOLIST': return [...state,{id: action.payload.id, title: 'New List'}]

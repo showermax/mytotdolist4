@@ -9,5 +9,5 @@ const reducers = combineReducers(
         todolists: TodolistsReducer
     }
 )
-type RootType = ReturnType<typeof reducers>
+export type RootType = ReturnType<typeof reducers>
 export const store = createStore(reducers)

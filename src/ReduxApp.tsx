@@ -11,6 +11,8 @@ import {
     editTodolistAC,
     TodolistsReducer
 } from "./Reducers/TodolistsReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {RootType} from "./redux/store";
 
 export type TasksType = {
     [key:string]: TaskType[]
@@ -20,144 +22,43 @@ export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
 export const Completed: string = 'todolistid-completed'
 function App() {
+    const tasks = useSelector((s:RootType) => s.tasks)
+    const todolists = useSelector((s:RootType) => s.todolists)
+    const dispatch=useDispatch()
 
-    // list of tasks
-    // const [tasks, setTasks] = useState({
-    //     [Inbox]: [
-    //         {
-    //             id: v1(),
-    //             taskName: 'initial task',
-    //             isDone: false,
-    //             properties: {tags: {priority: 'low', today: false}, parent: Inbox}
-    //         },
-    //         {
-    //             id: v1(),
-    //             taskName: 'learn how to use',
-    //             isDone: false,
-    //             properties: {tags: {priority: 'high', today: false}, parent: Inbox}
-    //         }
-    //     ],
-    //     [Today]: [
-    //         {
-    //             id: v1(),
-    //             taskName: 'this task you should do today',
-    //             isDone: false,
-    //             properties: {tags: {priority: 'high', today: true}, parent: Today}
-    //         },
-    //     ],
-    //     [Completed]: [
-    //         {
-    //             id: v1(),
-    //             taskName: 'that is already done',
-    //             isDone: true,
-    //             properties: {tags: {priority: 'normal', today: false}, parent: Completed}
-    //         },
-    //     ],
-    // })
-    const [tasks, tasksDispatch] = useReducer(TasksReducer,{
-        [Inbox]: [
-            {
-                id: v1(),
-                taskName: 'initial task',
-                isDone: false,
-                properties: {tags: {priority: 'low', today: false}, parent: Inbox}
-            },
-            {
-                id: v1(),
-                taskName: 'learn how to use',
-                isDone: false,
-                properties: {tags: {priority: 'high', today: false}, parent: Inbox}
-            }
-        ],
-        [Today]: [
-            {
-                id: v1(),
-                taskName: 'this task you should do today',
-                isDone: false,
-                properties: {tags: {priority: 'high', today: true}, parent: Today}
-            },
-        ],
-        [Completed]: [
-
-        ],
-    })
-    // list of todolists
-    // const [todolists, setTodolists] = useState([
-    //         {id: Inbox, title: 'Inbox'},
-    //         {id: Today, title: 'Today'},
-    //         {id: Completed, title: 'Done'}
-    //     ]
-    // )
     console.log(tasks)
-const [todolists,todolistsDispatch]=useReducer(TodolistsReducer, [
-            {id: Inbox, title: 'Inbox'},
-            {id: Today, title: 'Today'},
-            {id: Completed, title: 'Done'}
-        ])
+
     const addNewTodolist = () => {
         let newID = v1()
         // setTodolists([...todolists, {id: newID, title: 'New List'}])
         // // setTasks({...tasks, [newID]: []})
-        todolistsDispatch(addNewTodolistAC(newID))
-        tasksDispatch(addNewTodolistAC(newID))
+        dispatch(addNewTodolistAC(newID))
+
     }
 
     const deleteTodolist = (id: string) => {
         // setTodolists(todolists.filter(el => el.id !== id))
         // delete tasks[id]
-        todolistsDispatch(deleteTodolistAC(id))
-        tasksDispatch(deleteTodolistAC(id))
+        dispatch(deleteTodolistAC(id))
     }
 
     const addTask = (id_List: string, name: string) => {
-        tasksDispatch(addTaskAC(id_List, name))
-        // setTasks({
-        //     ...tasks,
-        //     [id_List]: [...tasks[id_List], {
-        //         id: v1(),
-        //         taskName: name,
-        //         isDone: false,
-        //         properties: {tags: {priority: 'normal', today: id_List === Today}, parent: id_List}
-        //     }]
-        // })
+        dispatch(addTaskAC(id_List, name))
     }
     const deleteTask = (id_List: string, id_Task: string) => {
-        tasksDispatch(deleteTaskAC(id_List,id_Task))
+        dispatch(deleteTaskAC(id_List,id_Task))
         // setTasks({...tasks, [id_List]: tasks[id_List].filter(el => el.id !== id_task)})
     }
     const makeDone = (id_List: string, id_task: string, e: boolean) => {
-        tasksDispatch(makeDoneAC(id_List,id_task,e))
-        // const parentListId = tasks[id_List].filter(el => el.id == id_task)[0].properties.parent; // достаем id листа, в котором таска создалась
-        // (id_List !== Completed) ? setTasks({
-        //         ...tasks,
-        //         [Completed]: [...tasks[Completed], ...tasks[id_List].filter(el => el.id === id_task).map(el => ({
-        //             ...el,
-        //             isDone: e
-        //         }))],
-        //
-        //         [id_List]: tasks[id_List].filter(el => el.id !== id_task),
-        //
-        //     })
-        //     :
-        //     setTasks({
-        //         ...tasks,
-        //         [Completed]: tasks[id_List].filter(el => el.id !== id_task).map(el => ({...el, isDone: true})),
-        //         [parentListId]: [...tasks[parentListId], ...tasks[id_List].filter(el => el.id === id_task).map(el => ({
-        //             ...el,
-        //             isDone: e
-        //         }))],
-        //
-        //     })
-
+        dispatch(makeDoneAC(id_List,id_task,e))
     }
 
     const editTask = (id_List: string, id_Task: string, s: string) => {
-        tasksDispatch(editTaskAC(id_List,id_Task,s))
-        // setTasks({...tasks, [id_List]: tasks[id_List].map(el => el.id === id_task ? {...el, taskName: s} : el)})
+        dispatch(editTaskAC(id_List,id_Task,s))
+
     }
     const editTodolist = (id_List: string, s: string) => {
-        // setTodolists(todolists.map(el => el.id === id_List ? {...el, title: s} : el))
-        todolistsDispatch(editTodolistAC(id_List,s))
+        dispatch(editTodolistAC(id_List,s))
     }
     const setForToday = (id_List: string, id: string) => {
         // setTasks({
@@ -171,7 +72,6 @@ const [todolists,todolistsDispatch]=useReducer(TodolistsReducer, [
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo"/>
-                <div>`The todolists IDs are: Inbox - {Inbox}, Today - {Today}</div>
             </header>
             <div className="todolists">
                 {todolists.map((el) =>
