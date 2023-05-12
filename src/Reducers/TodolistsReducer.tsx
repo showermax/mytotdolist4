@@ -8,7 +8,7 @@ const InitialState = [
             {id: Today, title: 'Today'},
             {id: Completed, title: 'Done'}
         ]
-export const TodolistsReducer = (state: TodolistsType, action:ActionsType) => {
+export const TodolistsReducer = (state: TodolistsType=InitialState, action:ActionsType) => {
 switch (action.type){
     case 'ADD-TODOLIST': return [...state,{id: action.payload.id, title: 'New List'}]
     case 'EDIT-TODOLIST': return state.map(el=>el.id===action.payload.id ? {...el, title:action.payload.s} : el)
