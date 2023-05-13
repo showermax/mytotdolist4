@@ -178,14 +178,14 @@ const [todolists,todolistsDispatch]=useReducer(TodolistsReducer, [
                     <Todolist
                         key={el.id}
                         id_List={el.id}
-                        tasks={tasks[el.id]}
+                        // tasks={tasks[el.id]}
                         title={el.title}
-                        addTask={addTask}
-                        deleteTask={(id_task) => deleteTask(el.id, id_task)}
+                        // addTask={addTask}
+                        // deleteTask={(id_task) => deleteTask(el.id, id_task)}
                         deleteTodolist={() => deleteTodolist(el.id)}
-                        makeDone={(id_task: string, e: boolean) => makeDone(el.id, id_task, e)}
-                        setForToday={(id_task) => setForToday(el.id, id_task)}
-                        editTask={(id_Task: string, s: string) => editTask(el.id, id_Task, s)}
+                        // makeDone={(id_task: string, e: boolean) => makeDone(el.id, id_task, e)}
+                        // setForToday={(id_task) => setForToday(el.id, id_task)}
+                        // editTask={(id_Task: string, s: string) => editTask(el.id, id_Task, s)}
                         editTodolist={(s: string) => editTodolist(el.id, s)}
                     />)
                 }

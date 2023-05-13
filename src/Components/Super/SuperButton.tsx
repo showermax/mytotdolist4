@@ -1,4 +1,4 @@
-import React from "react";
+import React, {memo} from "react";
 
 type PropsType = {
     title: string
@@ -6,8 +6,8 @@ type PropsType = {
     disabled?:boolean
     buttonStyle?: string
 }
-export function  SuperButton (props: PropsType){
+export const  SuperButton = memo((props: PropsType) =>{
     return (
         <button className={props.buttonStyle} onClick={props.onClickCallBack} disabled={props.disabled}>{props.title} </button>
     )
-}
+})
