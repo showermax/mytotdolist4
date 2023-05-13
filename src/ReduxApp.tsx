@@ -18,9 +18,7 @@ export type TasksType = {
     [key:string]: TaskType[]
 }
 export type TodolistsType= Array<{id: string, title:string}>
-export const Inbox: string = 'todolistid-inbox'
-export const Today: string = 'todolistid-today'
-export const Completed: string = 'todolistid-completed'
+
 function App() {
     const tasks = useSelector((s:RootType) => s.tasks)
     const todolists = useSelector((s:RootType) => s.todolists)
