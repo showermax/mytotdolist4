@@ -5,19 +5,25 @@ import {addNewTodolistAC, deleteTodolistAC} from "./TodolistsReducer";
 export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
 export const Completed: string = 'todolistid-completed'
-const InitialState = {
+const InitialState: TasksType = {
     [Inbox]: [
         {
             id: v1(),
-            taskName: 'initial task',
+            taskName: 'Low',
             isDone: false,
-            properties: {tags: {priority: 'low', today: false}, parent: Inbox}
+            properties: {tags: {priority: 'High', today: false}, parent: Inbox}
         },
         {
             id: v1(),
-            taskName: 'learn how to use',
+            taskName: 'High',
             isDone: false,
-            properties: {tags: {priority: 'high', today: false}, parent: Inbox}
+            properties: {tags: {priority: 'High', today: false}, parent: Inbox}
+        },
+        {
+            id: v1(),
+            taskName: 'Normal',
+            isDone: false,
+            properties: {tags: {priority: 'High', today: false}, parent: Inbox}
         }
     ],
     [Today]: [
@@ -25,7 +31,7 @@ const InitialState = {
             id: v1(),
             taskName: 'this task you should do today',
             isDone: false,
-            properties: {tags: {priority: 'high', today: true}, parent: Today}
+            properties: {tags: {priority: 'High', today: true}, parent: Today}
         },
     ],
     [Completed]: [
@@ -87,7 +93,7 @@ export function TasksReducer (state: TasksType=InitialState, action: ActionsType
             delete state[action.payload.id]
             return state
         }
-        case "CHANGE-PRIORUTY": {
+        case "CHANGE-PRIORITY": {
             return {
                 ...state,
                 [action.payload.id_List]: state[action.payload.id_List].map(el => el.id === action.payload.id ? {
@@ -143,11 +149,11 @@ export const setForTodayAC=(id_List: string, id_Task: string) => {
 
 export const ChanfePriorityAC=(id_List: string, id:string, priority:string) => {
     return {
-        type: 'CHANGE-PRIORUTY',
+        type: 'CHANGE-PRIORITY',
         payload: {
-            priority,
+            id_List,
             id,
-            id_List
+            priority
         }
     } as const
 }

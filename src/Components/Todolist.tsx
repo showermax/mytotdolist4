@@ -3,7 +3,14 @@ import {SuperButton} from "./Super/SuperButton";
 import {SuperInput} from "./Super/SuperInput";
 import {EditableSpan} from "./EditableSpan";
 import {Completed} from "../ReduxApp";
-import {addTaskAC, deleteTaskAC, editTaskAC, makeDoneAC, setForTodayAC} from "../Reducers/TasksReducer";
+import {
+    addTaskAC,
+    ChanfePriorityAC,
+    deleteTaskAC,
+    editTaskAC,
+    makeDoneAC,
+    setForTodayAC
+} from "../Reducers/TasksReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootType} from "../redux/store";
 
@@ -15,6 +22,7 @@ type PropsType = {
     editTodolist: (id_List: string, s: string) => void
 }
 
+export type PriorityType = 'High' | 'Normal' | 'Low'
 export type TaskType = {
     id: string
     taskName: string
@@ -35,7 +43,7 @@ export const Todolist = memo((props: PropsType) => {
     )
     const onKeyDownHandler = useCallback((k: KeyboardEvent<HTMLInputElement>) => {
         if (k.key === 'Enter') {
-            addTask()
+            dispatch(addTaskAC(props.id_List, newTaskName))
             setNewTaskName('')
         }
     },[])
@@ -52,7 +60,7 @@ export const Todolist = memo((props: PropsType) => {
         setFilter('High')
     }
     const changeFilterMedium = () => {
-        setFilter('Medium')
+        setFilter('Normal')
     }
     const changeFilterLow = () => {
         setFilter('Low')
@@ -74,16 +82,17 @@ export const Todolist = memo((props: PropsType) => {
         dispatch(setForTodayAC(props.id_List,id))
     }
     function filtering() {
-        if (filter === 'High') return tasks.filter(el => el.properties.tags.priority === 'high')
-        if (filter === 'Normal') return tasks.filter(el => el.properties.tags.priority === 'normal')
-        if (filter === 'Low') return tasks.filter(el => el.properties.tags.priority === 'low')
+        if (filter === 'High') return tasks.filter(el => el.properties.tags.priority === 'High')
+        if (filter === 'Normal') return tasks.filter(el => el.properties.tags.priority === 'Normal')
+        if (filter === 'Low') return tasks.filter(el => el.properties.tags.priority === 'Low')
         return tasks
     }
     useMemo(filtering,[])
-
+    console.log(tasks)
     const editHandler = useCallback((s: string) => props.editTodolist(props.id_List, s),[])
-    const selectOnchangeHandler = (e: ChangeEvent, id:string) =>{
-
+    const selectOnchangeHandler = (e: ChangeEvent<HTMLSelectElement>, id:string) =>{
+        console.log(e.currentTarget.value)
+        dispatch(ChanfePriorityAC(props.id_List, id, e.currentTarget.value))
     }
     return (
         <div className="todolist">
