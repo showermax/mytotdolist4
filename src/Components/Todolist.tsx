@@ -28,26 +28,26 @@ export const Todolist = memo((props: PropsType) => {
     const [newTaskName, setNewTaskName] = useState<string>('')
     const [filter, setFilter] = useState<string>('')
     const dispatch = useDispatch()
-    const tasks = useSelector((s: RootType) => s.tasks)
+    const tasks = useSelector((s: RootType) => s.tasks[props.id_List])
 
     const deleteTodolistHandler = ()=>(
         props.deleteTodolist(props.id_List)
     )
-    const onKeyDownHandler = (k: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyDownHandler = useCallback((k: KeyboardEvent<HTMLInputElement>) => {
         if (k.key === 'Enter') {
             addTask()
             setNewTaskName('')
         }
-    }
+    },[])
     const addTask = useCallback(() => {
         dispatch(addTaskAC(props.id_List, newTaskName))
         setNewTaskName('')
         setFilter('')
     },[dispatch,newTaskName])
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskName(e.currentTarget.value)
-    }
+    },[dispatch])
     const changeFilterHigh = () => {
         setFilter('High')
     }
@@ -74,17 +74,22 @@ export const Todolist = memo((props: PropsType) => {
         dispatch(setForTodayAC(props.id_List,id))
     }
     function filtering() {
-        // if (filter === 'High') return tasks[props.id_List].filter(el => el.properties.tags.priority === 'high')
-        // if (filter === 'Normal') return tasks[props.id_List].filter(el => el.properties.tags.priority === 'normal')
-        // if (filter === 'Low') return tasks[props.id_List].filter(el => el.properties.tags.priority === 'low')
-        // return tasks[props.id_List]
+        if (filter === 'High') return tasks.filter(el => el.properties.tags.priority === 'high')
+        if (filter === 'Normal') return tasks.filter(el => el.properties.tags.priority === 'normal')
+        if (filter === 'Low') return tasks.filter(el => el.properties.tags.priority === 'low')
+        return tasks
     }
-    useMemo(filtering,[filter])
+    useMemo(filtering,[])
+
+    const editHandler = useCallback((s: string) => props.editTodolist(props.id_List, s),[])
+    const selectOnchangeHandler = (e: ChangeEvent, id:string) =>{
+
+    }
     return (
         <div className="todolist">
             <div className="listwrapper">
                 <div className={'todolistTitle'}><EditableSpan content={props.title}
-                                                               editContent={(s: string) => props.editTodolist(props.id_List, s)}
+                                                               editContent={editHandler}
                                                                defaultState={props.title === 'New List'}/></div>
                 {props.id_List !== Completed && <div className="input">
                     <SuperInput type="text" value={newTaskName} onChangeCallback={onChangeHandler}
@@ -94,7 +99,7 @@ export const Todolist = memo((props: PropsType) => {
                 </div>}
                 <div className="list">
                     <ol>
-                        {tasks[props.id_List].map((el, i) =>
+                        {filtering().map((el, i) =>
                             <li key={i}>
                                 <div className={'task'}><input type="checkbox" checked={el.isDone}
                                                                onChange={(e: ChangeEvent<HTMLInputElement>) => makeDone(el.id, e.currentTarget.checked)}/>
@@ -102,6 +107,11 @@ export const Todolist = memo((props: PropsType) => {
                                                   editContent={(s: string) => editTask(el.id, s)}
                                                   defaultState={false}/></div>
                                 <div>
+                                    <select onChange={(e) => selectOnchangeHandler(e, el.id)}  value={el.properties.tags.priority}>
+                                        <option>Low</option>
+                                        <option>Normal</option>
+                                        <option>High</option>
+                                    </select>
                                     {(props.id_List === 'todolistid-inbox') &&
                                         <SuperButton title='>' onClickCallBack={() =>setForToday(el.id)}/>}
                                     <SuperButton title='X' onClickCallBack={() =>deleteTask(el.id)}/>

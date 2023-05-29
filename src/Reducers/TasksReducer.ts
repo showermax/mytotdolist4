@@ -87,10 +87,22 @@ export function TasksReducer (state: TasksType=InitialState, action: ActionsType
             delete state[action.payload.id]
             return state
         }
+        case "CHANGE-PRIORUTY": {
+            return {
+                ...state,
+                [action.payload.id_List]: state[action.payload.id_List].map(el => el.id === action.payload.id ? {
+                    ...el,
+                    properties: {...el.properties, tags: {...el.properties.tags, priority: action.payload.priority}}
+                } : el)
+            }
+        }
         default: return state
     }
 }
-type ActionsType = ReturnType<typeof addTaskAC> | ReturnType<typeof deleteTaskAC> | ReturnType<typeof makeDoneAC>| ReturnType<typeof editTaskAC>| ReturnType<typeof deleteTodolistAC> | ReturnType<typeof addNewTodolistAC> | ReturnType<typeof setForTodayAC>
+type ActionsType = ReturnType<typeof addTaskAC> | ReturnType<typeof deleteTaskAC> | ReturnType<typeof makeDoneAC>
+    | ReturnType<typeof editTaskAC>| ReturnType<typeof deleteTodolistAC> | ReturnType<typeof addNewTodolistAC>
+    | ReturnType<typeof setForTodayAC> | ReturnType<typeof ChanfePriorityAC>
+
 export const addTaskAC = (id_List: string, title:string)=>{
     return {
         type: 'ADD-TASK',
@@ -125,6 +137,17 @@ export const setForTodayAC=(id_List: string, id_Task: string) => {
         payload: {
             id_List,
             id_Task,
+        }
+    } as const
+}
+
+export const ChanfePriorityAC=(id_List: string, id:string, priority:string) => {
+    return {
+        type: 'CHANGE-PRIORUTY',
+        payload: {
+            priority,
+            id,
+            id_List
         }
     } as const
 }

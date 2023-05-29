@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from "react";
 
 type EditableSpanPropsType = {
     content: string
@@ -6,7 +6,7 @@ type EditableSpanPropsType = {
     defaultState: boolean
 }
 
-export function EditableSpan(props: EditableSpanPropsType) {
+export const EditableSpan = memo((props: EditableSpanPropsType) => {
     const [edit, setEdit] = useState(props.defaultState)
     const [newName, setNewName] = useState(props.content)
     const [error, setError] = useState(false)
@@ -49,4 +49,4 @@ export function EditableSpan(props: EditableSpanPropsType) {
                 }}>{props.content}</span>}
         </div>
     )
-}
+})
