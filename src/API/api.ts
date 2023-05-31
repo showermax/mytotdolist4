@@ -6,29 +6,32 @@ type ListType =  {
         addedDate: string,
         order: number
     }
-type GenericType<T> = {
+type GenericType<T={}> = {
     resultCode: number
     messages: Array<string>,
     data: T
 }
 
+const instance = axios.create({
+    baseURL: 'https://social-network.samuraijs.com/api/1.1',
+    withCredentials: true
+})
 
 const id_List='94ca0ed3-3654-4f85-ae98-23e46a915c42'
 export const api = {
     getLists () {
-        return axios.get<ListType[]>('https://social-network.samuraijs.com/api/1.1/todo-lists',
+        return instance.get<ListType[]>('/todo-lists',
             {"withCredentials": true})
     },
     addList () {
-        return axios.post<GenericType<{ item: ListType }>>('https://social-network.samuraijs.com/api/1.1/todo-lists',
-            {title:"Inbox"},{"withCredentials": true})
+        return instance.post<GenericType<{ item: ListType }>>('/todo-lists',
+            {title:"Inbox"})
     },
     deleteList () {
-        return axios.delete<GenericType<{}>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id_List}`,
-            {"withCredentials": true})
+        return instance.delete<GenericType>(`/todo-lists/${id_List}`)
     },
     updateList () {
-        return axios.put(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id_List}`,
-            {title:"Inbox2"},{"withCredentials": true})
+        return instance.put<GenericType>(`/todo-lists/${id_List}`,
+            {title:"Inbox2"})
     }
 }
