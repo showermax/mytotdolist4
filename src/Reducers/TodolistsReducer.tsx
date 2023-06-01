@@ -1,7 +1,8 @@
 import React from 'react';
 
 import {v1} from "uuid";
-import {TodolistsType} from "../ReduxApp";
+import {TasksType, TodolistsType} from "../ReduxApp";
+import {ListType} from "../API/api";
 
 export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
@@ -14,6 +15,7 @@ const InitialState = [
         ]
 export const TodolistsReducer = (state: TodolistsType=InitialState, action:ActionsType) => {
 switch (action.type){
+    case 'GET-TASKS': return action.payload.lists
     case 'ADD-TODOLIST': return [...state,{id: action.payload.id, title: 'New List'}]
     case 'EDIT-TODOLIST': return state.map(el=>el.id===action.payload.id ? {...el, title:action.payload.s} : el)
     case 'DELETE-TODOLIST': return state.filter(el=>el.id!==action.payload.id)
@@ -21,9 +23,10 @@ switch (action.type){
     default: return state
 }
 };
-type ActionsType = addNewTodolistACType
+type ActionsType = addNewTodolistACType | ReturnType<typeof getListsAC>
 
-type addNewTodolistACType = ReturnType<typeof addNewTodolistAC> | ReturnType<typeof editTodolistAC> | ReturnType<typeof deleteTodolistAC>
+type addNewTodolistACType = ReturnType<typeof addNewTodolistAC> | ReturnType<typeof editTodolistAC>
+    | ReturnType<typeof deleteTodolistAC>
 export const addNewTodolistAC = (id:string)=>{
     return {
         type: 'ADD-TODOLIST',
@@ -44,3 +47,8 @@ export const deleteTodolistAC = (id:string)=>{
         payload: {id}
     }as const
 }
+
+export const getListsAC = (lists:ListType[]) => ({
+    type:'GET-TASKS',
+    payload: {lists}
+} as const )

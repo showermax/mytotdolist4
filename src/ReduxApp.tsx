@@ -1,4 +1,4 @@
-import React, {useCallback, useReducer, useState} from 'react';
+import React, {useCallback, useEffect, useReducer, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {v1} from "uuid";
@@ -7,11 +7,12 @@ import {NewTodolist} from "./Components/NewTodolist";
 import {
     addNewTodolistAC,
     deleteTodolistAC,
-    editTodolistAC,
+    editTodolistAC, getListsAC,
     TodolistsReducer
 } from "./Reducers/TodolistsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootType} from "./redux/store";
+import {api} from "./API/api";
 
 export type TasksType = {
     [key:string]: TaskType[]
@@ -19,8 +20,12 @@ export type TasksType = {
 export type TodolistsType= Array<{id: string, title:string}>
 export const Completed: string = 'todolistid-completed'
 function App() {
-    const todolists = useSelector((s:RootType) => s.todolists)
     const dispatch=useDispatch()
+    useEffect(()=>{
+        api.getLists().
+        then((result) => dispatch(getListsAC(result.data)))},[])
+
+    const todolists:TodolistsType = useSelector((s:RootType) => s.todolists)
     const addNewTodolist = useCallback(() => {
         let newID = v1()
         dispatch(addNewTodolistAC(newID))

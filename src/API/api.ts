@@ -1,6 +1,6 @@
 import axios from "axios";
 
-type ListType =  {
+export type ListType =  {
         id: string,
         title: string,
         addedDate: string,
