@@ -9,8 +9,8 @@ import {
     addNewTodolistAC,
     deleteTodolistAC,
     editTodolistAC,
-    TodolistsReducer
-} from "./Reducers/TodolistsReducer";
+    TodoListsReducer
+} from "./Reducers/TodoListsReducer";
 
 export type TasksType = {
     [key:string]: TaskType[]
@@ -89,7 +89,7 @@ function App() {
     //     ]
     // )
     console.log(tasks)
-const [todolists,todolistsDispatch]=useReducer(TodolistsReducer, [
+const [todolists,todolistsDispatch]=useReducer(TodoListsReducer, [
             {id: Inbox, title: 'Inbox'},
             {id: Today, title: 'Today'},
             {id: Completed, title: 'Done'}

@@ -8,16 +8,15 @@ import {
     addNewTodolistAC,
     deleteTodolistAC,
     editTodolistAC, getListsAC,
-    TodolistsReducer
-} from "./Reducers/TodolistsReducer";
+} from "./Reducers/TodoListsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootType} from "./redux/store";
-import {api} from "./API/api";
+import {api, ListType} from "./API/api";
 
 export type TasksType = {
     [key:string]: TaskType[]
 }
-export type TodolistsType= Array<{id: string, title:string}>
+
 export const Completed: string = 'todolistid-completed'
 function App() {
     const dispatch=useDispatch()
@@ -25,10 +24,11 @@ function App() {
         api.getLists().
         then((result) => dispatch(getListsAC(result.data)))},[])
 
-    const todolists:TodolistsType = useSelector((s:RootType) => s.todolists)
+    const todolists = useSelector<RootType,ListType[]>(s => s.todolists)
     const addNewTodolist = useCallback(() => {
         let newID = v1()
         dispatch(addNewTodolistAC(newID))
+        api.addList()
     },[])
     const deleteTodolist = useCallback((id: string) => {
         dispatch(deleteTodolistAC(id))

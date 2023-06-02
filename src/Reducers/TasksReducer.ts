@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {TasksType} from "../ReduxApp";
-import {addNewTodolistAC, deleteTodolistAC} from "./TodolistsReducer";
+import {addNewTodolistAC, deleteTodolistAC} from "./TodoListsReducer";
 
 export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
