@@ -23,15 +23,15 @@ type PropsType = {
 }
 
 export type PriorityType = 'High' | 'Normal' | 'Low'
-export type TaskType = {
-    id: string
-    taskName: string
-    isDone: boolean
-    properties: {
-        tags: { priority: string, today: boolean }
-        parent: string
-    }
-}
+// export type TaskType = {
+//     id: string
+//     taskName: string
+//     isDone: boolean
+//     properties: {
+//         tags: { priority: string, today: boolean }
+//         parent: string
+//     }
+// }
 export const Todolist = memo((props: PropsType) => {
     const [newTaskName, setNewTaskName] = useState<string>('')
     const [filter, setFilter] = useState<string>('')

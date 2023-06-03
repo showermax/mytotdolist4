@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useReducer, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {v1} from "uuid";
-import {TaskType, Todolist} from "./Components/Todolist";
+import {Todolist} from "./Components/Todolist";
 import {NewTodolist} from "./Components/NewTodolist";
 import {
     addListTC,
@@ -12,7 +12,8 @@ import {
 } from "./Reducers/TodoListsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootType, useAppDispatch} from "./redux/store";
-import {api, ListType} from "./API/api";
+import {ListType} from "./API/api";
+import {TaskType} from "./Reducers/TasksReducer";
 
 export type TasksType = {
     [key:string]: TaskType[]
