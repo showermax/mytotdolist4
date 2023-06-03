@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-import {ListType} from "../API/api";
+import {api, ListType} from "../API/api";
 import {Dispatch} from "redux";
 
 export const Inbox: string = 'todolistid-inbox'
@@ -15,7 +15,7 @@ const initialState = [
         ]
 export const TodoListsReducer = (state: ListType[]=initialState, action:ActionsType) => {
 switch (action.type){
-    case 'GET-TASKS': return action.payload.lists
+    case 'GET-TASKS': return [...state, action.payload.lists]
     case 'ADD-TODOLIST': return [...state,{id: action.payload.id, title: 'New List'}]
     case 'EDIT-TODOLIST': return state.map(el=>el.id===action.payload.id ? {...el, title:action.payload.s} : el)
     case 'DELETE-TODOLIST': return state.filter(el=>el.id!==action.payload.id)
@@ -54,5 +54,6 @@ export const getListsAC = (lists:ListType[]) => ({
 } as const )
 
 export const getListsTC = () => (dispatch: Dispatch) => {
-
+    api.getLists().
+    then((result) => dispatch(getListsAC(result.data)))
 }

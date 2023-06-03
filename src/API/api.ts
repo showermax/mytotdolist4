@@ -6,7 +6,7 @@ export type ListType =  {
         addedDate: string,
         order: number
     }
-type GenericType<T={}> = {
+type ReponceType<T={}> = {
     resultCode: number
     messages: Array<string>,
     data: T
@@ -24,14 +24,15 @@ export const api = {
             {"withCredentials": true})
     },
     addList () {
-        return instance.post<GenericType<{ item: ListType }>>('/todo-lists',
+        return instance.post<ReponceType<{ item: ListType }>>('/todo-lists',
             {title:"Inbox"})
+
     },
     deleteList () {
-        return instance.delete<GenericType>(`/todo-lists/${id_List}`)
+        return instance.delete<ReponceType>(`/todo-lists/${id_List}`)
     },
     updateList () {
-        return instance.put<GenericType>(`/todo-lists/${id_List}`,
+        return instance.put<ReponceType>(`/todo-lists/${id_List}`,
             {title:"Inbox2"})
     }
 }

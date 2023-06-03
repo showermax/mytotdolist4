@@ -7,10 +7,10 @@ import {NewTodolist} from "./Components/NewTodolist";
 import {
     addNewTodolistAC,
     deleteTodolistAC,
-    editTodolistAC, getListsAC,
+    editTodolistAC, getListsAC, getListsTC
 } from "./Reducers/TodoListsReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {RootType} from "./redux/store";
+import {RootType, useAppDispatch} from "./redux/store";
 import {api, ListType} from "./API/api";
 
 export type TasksType = {
@@ -19,10 +19,10 @@ export type TasksType = {
 
 export const Completed: string = 'todolistid-completed'
 function App() {
-    const dispatch=useDispatch()
+    const dispatch = useAppDispatch()
     useEffect(()=>{
-        api.getLists().
-        then((result) => dispatch(getListsAC(result.data)))},[])
+        dispatch(getListsTC())
+        },[])
 
     const todolists = useSelector<RootType,ListType[]>(s => s.todolists)
     const addNewTodolist = useCallback(() => {

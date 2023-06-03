@@ -108,7 +108,7 @@ export const Todolist = memo((props: PropsType) => {
                 </div>}
                 <div className="list">
                     <ol>
-                        {filtering().map((el, i) =>
+                        {filtering()?.map((el, i) =>
                             <li key={i}>
                                 <div className={'task'}><input type="checkbox" checked={el.isDone}
                                                                onChange={(e: ChangeEvent<HTMLInputElement>) => makeDone(el.id, e.currentTarget.checked)}/>

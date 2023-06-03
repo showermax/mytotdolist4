@@ -1,16 +1,16 @@
 import React, {useReducer, useState} from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from '../src/logo.svg';
+import '../src/App.css';
 import {v1} from "uuid";
-import {TaskType, Todolist} from "./Components/Todolist";
-import {NewTodolist} from "./Components/NewTodolist";
-import {TasksReducer, addTaskAC, deleteTaskAC, makeDoneAC, editTaskAC} from "./Reducers/TasksReducer";
+import {TaskType, Todolist} from "../src/Components/Todolist";
+import {NewTodolist} from "../src/Components/NewTodolist";
+import {TasksReducer, addTaskAC, deleteTaskAC, makeDoneAC, editTaskAC} from "../src/Reducers/TasksReducer";
 import {
     addNewTodolistAC,
     deleteTodolistAC,
     editTodolistAC,
     TodoListsReducer
-} from "./Reducers/TodoListsReducer";
+} from "../src/Reducers/TodoListsReducer";
 
 export type TasksType = {
     [key:string]: TaskType[]
