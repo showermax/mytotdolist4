@@ -17,22 +17,22 @@ const instance = axios.create({
     withCredentials: true
 })
 
-const id_List='94ca0ed3-3654-4f85-ae98-23e46a915c42'
+// const id_List='94ca0ed3-3654-4f85-ae98-23e46a915c42'
 export const api = {
     getLists () {
         return instance.get<ListType[]>('/todo-lists',
             {"withCredentials": true})
     },
-    addList () {
+    addList (id:string,title:string) {
         return instance.post<ReponceType<{ item: ListType }>>('/todo-lists',
-            {title:"Inbox"})
+            {id,title})
 
     },
-    deleteList () {
+    deleteList (id_List:string) {
         return instance.delete<ReponceType>(`/todo-lists/${id_List}`)
     },
-    updateList () {
+    updateList (id_List:string,title:string) {
         return instance.put<ReponceType>(`/todo-lists/${id_List}`,
-            {title:"Inbox2"})
+            {title})
     }
 }

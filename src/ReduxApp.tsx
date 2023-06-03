@@ -5,9 +5,10 @@ import {v1} from "uuid";
 import {TaskType, Todolist} from "./Components/Todolist";
 import {NewTodolist} from "./Components/NewTodolist";
 import {
-    addNewTodolistAC,
+    addListTC,
+    addNewTodolistAC, deleteListTC,
     deleteTodolistAC,
-    editTodolistAC, getListsAC, getListsTC
+    editTodolistAC, getListsAC, getListsTC, updateListTC
 } from "./Reducers/TodoListsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {RootType, useAppDispatch} from "./redux/store";
@@ -23,19 +24,19 @@ function App() {
     useEffect(()=>{
         dispatch(getListsTC())
         },[])
-
     const todolists = useSelector<RootType,ListType[]>(s => s.todolists)
+
     const addNewTodolist = useCallback(() => {
         let newID = v1()
-        dispatch(addNewTodolistAC(newID))
-        api.addList()
+        dispatch(addListTC(newID))
     },[])
     const deleteTodolist = useCallback((id: string) => {
-        dispatch(deleteTodolistAC(id))
+        dispatch(deleteListTC(id))
     },[])
     const editTodolist = useCallback((id_List: string, s: string) => {
-        dispatch(editTodolistAC(id_List,s))
+        dispatch(updateListTC(id_List,s))
     },[])
+
     return (
         <div className="App">
             <header className="App-header">

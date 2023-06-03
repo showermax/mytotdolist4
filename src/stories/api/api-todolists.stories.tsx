@@ -16,7 +16,7 @@ export const GetTodolists = () => {
 export const CreateTodolist = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        api.addList().then(result=>setState(result.data))
+        // api.addList().then(result=>setState(result.data))
     }, [])
 
     return <div>{JSON.stringify(state)}</div>
@@ -24,7 +24,7 @@ export const CreateTodolist = () => {
 export const DeleteTodolist = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        api.deleteList().then(result=>setState(result.data))
+        // api.deleteList().then(result=>setState(result.data))
     }, [])
 
     return <div>{JSON.stringify(state)}</div>
@@ -32,7 +32,7 @@ export const DeleteTodolist = () => {
 export const UpdateTodolistTitle = () => {
     const [state, setState] = useState<any>(null)
     useEffect(() => {
-        api.updateList().then(result=>setState(result.data))
+        // api.updateList().then(result=>setState(result.data))
     }, [])
 
     return <div>{JSON.stringify(state)}</div>

@@ -15,8 +15,8 @@ const initialState = [
         ]
 export const TodoListsReducer = (state: ListType[]=initialState, action:ActionsType) => {
 switch (action.type){
-    case 'GET-TASKS': return [...state, action.payload.lists]
-    case 'ADD-TODOLIST': return [...state,{id: action.payload.id, title: 'New List'}]
+    case 'GET-LISTS': return action.payload.lists
+    case 'ADD-TODOLIST': return [...state,{id: action.payload.id, title: action.payload.title}]
     case 'EDIT-TODOLIST': return state.map(el=>el.id===action.payload.id ? {...el, title:action.payload.s} : el)
     case 'DELETE-TODOLIST': return state.filter(el=>el.id!==action.payload.id)
 
@@ -27,10 +27,10 @@ type ActionsType = addNewTodolistACType | ReturnType<typeof getListsAC>
 
 type addNewTodolistACType = ReturnType<typeof addNewTodolistAC> | ReturnType<typeof editTodolistAC>
     | ReturnType<typeof deleteTodolistAC>
-export const addNewTodolistAC = (id:string)=>{
+export const addNewTodolistAC = (id:string, title: string)=>{
     return {
         type: 'ADD-TODOLIST',
-        payload: {id}
+        payload: {id, title}
     }as const
 }
 
@@ -49,11 +49,26 @@ export const deleteTodolistAC = (id:string)=>{
 }
 
 export const getListsAC = (lists:ListType[]) => ({
-    type:'GET-TASKS',
+    type:'GET-LISTS',
     payload: {lists}
 } as const )
 
 export const getListsTC = () => (dispatch: Dispatch) => {
     api.getLists().
     then((result) => dispatch(getListsAC(result.data)))
+}
+
+export const addListTC = (newId:string) => (dispatch: Dispatch) => {
+    api.addList(newId,'New List').
+    then((result) => dispatch(addNewTodolistAC(newId,'New List')))
+}
+
+export const deleteListTC = (id_List:string) => (dispatch: Dispatch) => {
+    api.deleteList(id_List).
+    then((result) => dispatch(deleteTodolistAC(id_List)))
+}
+
+export const updateListTC = (id_List:string,title:string) => (dispatch: Dispatch) => {
+    api.updateList(id_List,title).
+    then((result) => dispatch(editTodolistAC(id_List,title)))
 }
