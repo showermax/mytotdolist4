@@ -1,6 +1,8 @@
 import {v1} from "uuid";
 import {TasksType} from "../ReduxApp";
 import {addNewTodolistAC, deleteTodolistAC} from "./TodoListsReducer";
+import {Dispatch} from "redux";
+import {api} from "../API/api";
 
 export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
@@ -41,6 +43,9 @@ const InitialState: TasksType = {
 
 export function TasksReducer (state: TasksType=InitialState, action: ActionsType) {
     switch (action.type) {
+        case 'GET-TASKS': {
+            return state
+        }
         case 'ADD-TASK': {
             return {
                 ...state,
@@ -107,8 +112,15 @@ export function TasksReducer (state: TasksType=InitialState, action: ActionsType
 }
 type ActionsType = ReturnType<typeof addTaskAC> | ReturnType<typeof deleteTaskAC> | ReturnType<typeof makeDoneAC>
     | ReturnType<typeof editTaskAC>| ReturnType<typeof deleteTodolistAC> | ReturnType<typeof addNewTodolistAC>
-    | ReturnType<typeof setForTodayAC> | ReturnType<typeof ChanfePriorityAC>
+    | ReturnType<typeof setForTodayAC> | ReturnType<typeof changePriorityAC> | ReturnType<typeof getTasksAC>
 
+
+export const getTasksAC = (id_List: string) => {
+    return {
+        type: 'GET-TASKS',
+        payload: {id_List}
+    } as const
+}
 export const addTaskAC = (id_List: string, title:string)=>{
     return {
         type: 'ADD-TASK',
@@ -147,7 +159,7 @@ export const setForTodayAC=(id_List: string, id_Task: string) => {
     } as const
 }
 
-export const ChanfePriorityAC=(id_List: string, id:string, priority:string) => {
+export const changePriorityAC=(id_List: string, id:string, priority:string) => {
     return {
         type: 'CHANGE-PRIORITY',
         payload: {
@@ -156,5 +168,9 @@ export const ChanfePriorityAC=(id_List: string, id:string, priority:string) => {
             priority
         }
     } as const
+}
+
+export const getTasksTC =(id_List: string) => (dispatch:Dispatch) => {
+    api.getTasks(id_List).then(result => dispatch(getTasksAC(result.data.items)))
 }
 

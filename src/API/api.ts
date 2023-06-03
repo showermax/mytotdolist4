@@ -20,13 +20,11 @@ const instance = axios.create({
 // const id_List='94ca0ed3-3654-4f85-ae98-23e46a915c42'
 export const api = {
     getLists () {
-        return instance.get<ListType[]>('/todo-lists',
-            {"withCredentials": true})
+        return instance.get<ListType[]>('/todo-lists')
     },
     addList (id:string,title:string) {
         return instance.post<ReponceType<{ item: ListType }>>('/todo-lists',
             {id,title})
-
     },
     deleteList (id_List:string) {
         return instance.delete<ReponceType>(`/todo-lists/${id_List}`)
@@ -34,5 +32,8 @@ export const api = {
     updateList (id_List:string,title:string) {
         return instance.put<ReponceType>(`/todo-lists/${id_List}`,
             {title})
+    },
+    getTasks (id_List:string) {
+        return instance.get(`${id_List}/tasks`)
     }
 }

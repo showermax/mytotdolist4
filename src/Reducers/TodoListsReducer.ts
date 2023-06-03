@@ -1,5 +1,3 @@
-import React from 'react';
-
 
 import {api, ListType} from "../API/api";
 import {Dispatch} from "redux";

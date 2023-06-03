@@ -5,7 +5,7 @@ import {EditableSpan} from "./EditableSpan";
 import {Completed} from "../ReduxApp";
 import {
     addTaskAC,
-    ChanfePriorityAC,
+    changePriorityAC,
     deleteTaskAC,
     editTaskAC,
     makeDoneAC,
@@ -37,7 +37,6 @@ export const Todolist = memo((props: PropsType) => {
     const [filter, setFilter] = useState<string>('')
     const dispatch = useDispatch()
     const tasks = useSelector((s: RootType) => s.tasks[props.id_List])
-
     const deleteTodolistHandler = ()=>(
         props.deleteTodolist(props.id_List)
     )
@@ -71,7 +70,6 @@ export const Todolist = memo((props: PropsType) => {
     const makeDone = (id_task: string, e: boolean) => {
         dispatch(makeDoneAC(props.id_List,id_task,e))
     }
-
     const deleteTask = (id_Task: string) => {
         dispatch(deleteTaskAC(props.id_List,id_Task))
     }
@@ -92,7 +90,7 @@ export const Todolist = memo((props: PropsType) => {
     const editHandler = useCallback((s: string) => props.editTodolist(props.id_List, s),[])
     const selectOnchangeHandler = (e: ChangeEvent<HTMLSelectElement>, id:string) =>{
         console.log(e.currentTarget.value)
-        dispatch(ChanfePriorityAC(props.id_List, id, e.currentTarget.value))
+        dispatch(changePriorityAC(props.id_List, id, e.currentTarget.value))
     }
     return (
         <div className="todolist">
