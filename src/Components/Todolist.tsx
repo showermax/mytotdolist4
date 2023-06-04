@@ -6,7 +6,7 @@ import {Completed} from "../ReduxApp";
 import {
     addTaskAC, addTaskTC,
     changePriorityAC,
-    deleteTaskAC,
+    deleteTaskAC, deleteTaskTC,
     editTaskAC, getTasksTC,
     makeDoneAC,
     setForTodayAC, TaskType
@@ -75,7 +75,7 @@ export const Todolist = memo((props: PropsType) => {
         dispatch(makeDoneAC(props.id_List, id_task, e))
     }
     const deleteTask = (id_Task: string) => {
-        dispatch(deleteTaskAC(props.id_List, id_Task))
+        dispatch(deleteTaskTC(props.id_List, id_Task))
     }
     const editTask = (id_Task: string, s: string) => {
         dispatch(editTaskAC(props.id_List, id_Task, s))
@@ -83,7 +83,8 @@ export const Todolist = memo((props: PropsType) => {
     const setForToday = (id: string) => {
         dispatch(setForTodayAC(props.id_List, id))
     }
-
+    const date = new Date
+    console.log(date.toISOString())
     function filtering() {
         if (filter === 'High') return tasks.filter(el => el.priority === 2)
         if (filter === 'Normal') return tasks.filter(el => el.priority === 1)

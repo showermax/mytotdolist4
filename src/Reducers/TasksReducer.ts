@@ -181,14 +181,21 @@ export const changePriorityAC = (id_List: string, id: string, priority: string) 
         }
     } as const
 }
+
 export const getTasksTC = (id_List: string) => (dispatch: Dispatch) => {
     api.getTasks(id_List).then(result => dispatch(getTasksAC(id_List, result.data.items)))
 }
 export const addTaskTC = (id_List: string, title: string) => (dispatch: Dispatch) => {
     api.addTask(id_List, title).then(result => dispatch(addTaskAC(result.data.data.item)))
 }
+export const deleteTaskTC = (id_List: string, id_Task:string) => (dispatch: Dispatch) => {
+    api.deleteTask(id_List,id_Task).then(result => dispatch(deleteTaskAC(id_List,id_Task)))
+}
 
-export const deleteTaskTC = () => () => {}
+
+
+
+
 // const InitialState: TasksType = {
 //     [Inbox]: [
 //         {

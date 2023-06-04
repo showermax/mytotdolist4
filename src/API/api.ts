@@ -39,5 +39,8 @@ export const api = {
     },
     addTask (id_List: string, title:string) {
         return instance.post<ReponceType<{item:TaskType}>>(`/todo-lists/${id_List}/tasks`, {title})
+    },
+    deleteTask (id_List: string, id_Task:string) {
+        return instance.delete<ReponceType<{item:TaskType}>>(`/todo-lists/${id_List}/tasks/${id_Task}`)
     }
 }
