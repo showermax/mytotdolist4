@@ -6,10 +6,10 @@ export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
 export const Completed: string = 'todolistid-completed'
 
-const initialState = [
-            {id: Inbox, title: 'Inbox',addedDate: '',order: 0},
-            {id: Today, title: 'Today',addedDate: '',order: 1},
-            {id: Completed, title: 'Done',addedDate: '',order: 2}
+const initialState: ListType[] = [
+            // {id: Inbox, title: 'Inbox',addedDate: '',order: 0},
+            // {id: Today, title: 'Today',addedDate: '',order: 1},
+            // {id: Completed, title: 'Done',addedDate: '',order: 2}
         ]
 export const TodoListsReducer = (state: ListType[]=initialState, action:ActionsType) => {
 switch (action.type){

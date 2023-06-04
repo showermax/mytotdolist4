@@ -1,4 +1,5 @@
 import axios from "axios";
+import {TaskType} from "../Reducers/TasksReducer";
 
 export type ListType =  {
         id: string,
@@ -34,6 +35,9 @@ export const api = {
             {title})
     },
     getTasks (id_List:string) {
-        return instance.get(`${id_List}/tasks`)
+        return instance.get(`/todo-lists/${id_List}/tasks`)
+    },
+    addTask (id_List: string, title:string) {
+        return instance.post<ReponceType<{item:TaskType}>>(`/todo-lists/${id_List}/tasks`, {title})
     }
 }
