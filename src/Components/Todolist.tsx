@@ -7,8 +7,8 @@ import {
     addTaskAC, addTaskTC,
     changePriorityAC,
     deleteTaskAC, deleteTaskTC,
-    editTaskAC, getTasksTC,
-    makeDoneAC,
+    editTaskAC, editTaskTC, getTasksTC,
+    makeDoneAC, ModelType,
     setForTodayAC, TaskType
 } from "../Reducers/TasksReducer";
 import {useSelector} from "react-redux";
@@ -78,13 +78,11 @@ export const Todolist = memo((props: PropsType) => {
         dispatch(deleteTaskTC(props.id_List, id_Task))
     }
     const editTask = (id_Task: string, s: string) => {
-        dispatch(editTaskAC(props.id_List, id_Task, s))
+        dispatch(editTaskTC(props.id_List, id_Task, {title: s}))
     }
     const setForToday = (id: string) => {
         dispatch(setForTodayAC(props.id_List, id))
     }
-    const date = new Date
-    console.log(date.toISOString())
     function filtering() {
         if (filter === 'High') return tasks.filter(el => el.priority === 2)
         if (filter === 'Normal') return tasks.filter(el => el.priority === 1)
@@ -93,11 +91,12 @@ export const Todolist = memo((props: PropsType) => {
     }
 
     useMemo(filtering, [])
-    console.log(tasks)
+
     const editHandler = useCallback((s: string) => props.editTodolist(props.id_List, s), [])
-    const selectOnchangeHandler = (e: ChangeEvent<HTMLSelectElement>, id: string) => {
-        console.log(e.currentTarget.value)
-        dispatch(changePriorityAC(props.id_List, id, e.currentTarget.value))
+    const selectOnchangeHandler = (e: ChangeEvent<HTMLSelectElement>, id_Task: string) => {
+        // dispatch(changePriorityAC(props.id_List, id, e.currentTarget.value))
+        dispatch(editTaskTC(props.id_List, id_Task, {priority: +e.currentTarget.value}))
+
     }
     return (
         <div className="todolist">

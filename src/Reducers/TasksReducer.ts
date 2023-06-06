@@ -3,6 +3,8 @@ import {TasksType} from "../ReduxApp";
 import {addNewTodolistAC, deleteTodolistAC, getListsAC} from "./TodoListsReducer";
 import {Dispatch} from "redux";
 import {api} from "../API/api";
+import {RootType} from "../redux/store";
+import {string} from "prop-types";
 
 export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
@@ -21,15 +23,14 @@ export type TaskType = {
     order: number
     addedDate: Date
 }
-const model = {
-    description: '',
-    completed: false,
-    status: 0,
-    priority: 0,
-    startDate: '',
-    deadline: '',
-    order: 0,
-    addedDate: new Date()
+export type ModelType = {
+    title?:string,
+    description?: string,
+    completed?: boolean,
+    status?: number,
+    priority?: number,
+    startDate?: Date,
+    deadline?: Date
 }
 const initialState: TasksType = {}
 
@@ -84,10 +85,9 @@ export function TasksReducer(state: TasksType = initialState, action: ActionsTyp
         case 'EDIT-TASK': {
             return {
                 ...state,
-                [action.payload.id_List]: state[action.payload.id_List].map(el => el.id === action.payload.id_Task ? {
-                    ...el,
-                    taskName: action.payload.s
-                } : el)
+                [action.payload.task.todoListId]: state[action.payload.task.todoListId].map(el => el.id === action.payload.task.id ?
+                    action.payload.task
+                 : el)
             }
         }
         case 'SET-FOR-TODAY': {
@@ -156,10 +156,10 @@ export const makeDoneAC = (id_List: string, id_Task: string, e: boolean) => {
         }
     } as const
 }
-export const editTaskAC = (id_List: string, id_Task: string, s: string) => {
+export const editTaskAC = (task: TaskType) => {
     return {
         type: 'EDIT-TASK',
-        payload: {id_List, id_Task, s}
+        payload: {task}
     } as const
 }
 export const setForTodayAC = (id_List: string, id_Task: string) => {
@@ -190,6 +190,24 @@ export const addTaskTC = (id_List: string, title: string) => (dispatch: Dispatch
 }
 export const deleteTaskTC = (id_List: string, id_Task:string) => (dispatch: Dispatch) => {
     api.deleteTask(id_List,id_Task).then(result => dispatch(deleteTaskAC(id_List,id_Task)))
+}
+export const editTaskTC = (id_List: string, id_Task:string, property:ModelType) => (dispatch: Dispatch, getState: ()=> RootType ) => {
+    const task = getState().tasks[id_List].find(el=>el.id === id_Task)
+    if (task) {
+        const model = {
+            title: task.title,
+            description: task.description,
+            completed: task.completed,
+            status: task.status,
+            priority: task.priority,
+            startDate: task.startDate,
+            deadline: task.deadline,
+            ...property
+        }
+        api.editTask(id_List, id_Task, model).then((result) => {
+            dispatch(editTaskAC(result.data.data.item))
+        })
+    }
 }
 
 

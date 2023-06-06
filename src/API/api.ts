@@ -1,5 +1,5 @@
 import axios from "axios";
-import {TaskType} from "../Reducers/TasksReducer";
+import {ModelType, TaskType} from "../Reducers/TasksReducer";
 
 export type ListType =  {
         id: string,
@@ -7,9 +7,10 @@ export type ListType =  {
         addedDate: string,
         order: number
     }
-type ReponceType<T={}> = {
+type ResponceType<T={}> = {
     resultCode: number
     messages: Array<string>,
+
     data: T
 }
 
@@ -24,23 +25,26 @@ export const api = {
         return instance.get<ListType[]>('/todo-lists')
     },
     addList (id:string,title:string) {
-        return instance.post<ReponceType<{ item: ListType }>>('/todo-lists',
+        return instance.post<ResponceType<{ item: ListType }>>('/todo-lists',
             {id,title})
     },
     deleteList (id_List:string) {
-        return instance.delete<ReponceType>(`/todo-lists/${id_List}`)
+        return instance.delete<ResponceType>(`/todo-lists/${id_List}`)
     },
     updateList (id_List:string,title:string) {
-        return instance.put<ReponceType>(`/todo-lists/${id_List}`,
+        return instance.put<ResponceType>(`/todo-lists/${id_List}`,
             {title})
     },
     getTasks (id_List:string) {
         return instance.get(`/todo-lists/${id_List}/tasks`)
     },
     addTask (id_List: string, title:string) {
-        return instance.post<ReponceType<{item:TaskType}>>(`/todo-lists/${id_List}/tasks`, {title})
+        return instance.post<ResponceType<{item:TaskType}>>(`/todo-lists/${id_List}/tasks`, {title})
     },
     deleteTask (id_List: string, id_Task:string) {
-        return instance.delete<ReponceType<{item:TaskType}>>(`/todo-lists/${id_List}/tasks/${id_Task}`)
+        return instance.delete<ResponceType<{item:TaskType}>>(`/todo-lists/${id_List}/tasks/${id_Task}`)
+    },
+    editTask (id_List: string, id_Task:string, model:ModelType) {
+        return instance.put<ResponceType<{item:TaskType}>>(`/todo-lists/${id_List}/tasks/${id_Task}`, model)
     }
 }
