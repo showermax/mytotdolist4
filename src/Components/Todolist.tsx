@@ -121,9 +121,9 @@ export const Todolist = memo((props: PropsType) => {
                                                   defaultState={false}/></div>
                                 <div>
                                     <select onChange={(e) => selectOnchangeHandler(e, el.id)} value={el.priority}>
-                                        <option>Low</option>
-                                        <option>Normal</option>
-                                        <option>High</option>
+                                        <option value ={0}>Low</option>
+                                        <option value ={1}>Normal</option>
+                                        <option value ={2}>High</option>
                                     </select>
                                     {(props.id_List === 'todolistid-inbox') &&
                                         <SuperButton title='>' onClickCallBack={() => setForToday(el.id)}/>}
