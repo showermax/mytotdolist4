@@ -1,6 +1,7 @@
 
 import {api, ListType} from "../API/api";
 import {Dispatch} from "redux";
+import {setError, setStatusLoading} from "./AppReducer";
 
 export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
@@ -52,21 +53,28 @@ export const getListsAC = (lists:ListType[]) => ({
 } as const )
 
 export const getListsTC = () => (dispatch: Dispatch) => {
+    dispatch(setStatusLoading('loading'))
     api.getLists().
-    then((result) => dispatch(getListsAC(result.data)))
+    then((result) => {
+        dispatch(getListsAC(result.data))
+        dispatch(setStatusLoading('succeeded'))
+    })
 }
 
 export const addListTC = (newId:string) => (dispatch: Dispatch) => {
+    dispatch(setStatusLoading('loading'))
     api.addList(newId,'New List').
     then((result) => dispatch(addNewTodolistAC(newId,'New List')))
 }
 
 export const deleteListTC = (id_List:string) => (dispatch: Dispatch) => {
+    dispatch(setStatusLoading('loading'))
     api.deleteList(id_List).
     then((result) => dispatch(deleteTodolistAC(id_List)))
 }
 
 export const updateListTC = (id_List:string,title:string) => (dispatch: Dispatch) => {
+    dispatch(setStatusLoading('loading'))
     api.updateList(id_List,title).
     then((result) => dispatch(editTodolistAC(id_List,title)))
 }

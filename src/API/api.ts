@@ -10,7 +10,6 @@ export type ListType =  {
 type ResponceType<T={}> = {
     resultCode: number
     messages: Array<string>,
-
     data: T
 }
 

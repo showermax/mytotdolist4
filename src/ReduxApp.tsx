@@ -14,6 +14,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootType, useAppDispatch} from "./redux/store";
 import {ListType} from "./API/api";
 import {TaskType} from "./Reducers/TasksReducer";
+import {RequestStatusType} from "./Reducers/AppReducer";
+import {Loading} from "./Components/Loading";
+import {ErrorAlert} from "./Components/ErrorAlert";
 
 export type TasksType = {
     [key:string]: TaskType[]
@@ -26,6 +29,8 @@ function App() {
         dispatch(getListsTC())
         },[])
     const todolists = useSelector<RootType,ListType[]>(s => s.todolists)
+    const status = useSelector<RootType,RequestStatusType>(s => s.app.status)
+    const errorState = useSelector<RootType,null | string>(s => s.app.error)
 
     const addNewTodolist = useCallback(() => {
         let newID = v1()
@@ -37,7 +42,8 @@ function App() {
     const editTodolist = useCallback((id_List: string, s: string) => {
         dispatch(updateListTC(id_List,s))
     },[])
-
+    console.log(status)
+    console.log(errorState)
     return (
         <div className="App">
             <header className="App-header">
@@ -54,6 +60,8 @@ function App() {
                     />)
                 }
                 <NewTodolist addNew={addNewTodolist}/>
+                <ErrorAlert error={errorState} />
+                {status === 'loading' && <Loading status={status}/>}
             </div>
         </div>
     );
