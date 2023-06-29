@@ -60,8 +60,8 @@ function App() {
                     />)
                 }
                 <NewTodolist addNew={addNewTodolist}/>
-                <ErrorAlert error={errorState} />
-                {status === 'loading' && <Loading status={status}/>}
+                {/*<ErrorAlert error={errorState} />*/}
+                {/*{status === 'loading' && <Loading status={status}/>}*/}
             </div>
         </div>
     );

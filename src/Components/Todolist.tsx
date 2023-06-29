@@ -4,16 +4,18 @@ import {SuperInput} from "./Super/SuperInput";
 import {EditableSpan} from "./EditableSpan";
 import {Completed} from "../ReduxApp";
 import {
-    addTaskAC, addTaskTC,
-    changePriorityAC,
-    deleteTaskAC, deleteTaskTC,
-    editTaskAC, editTaskTC, getTasksTC,
-    makeDoneAC, ModelType,
-    setForTodayAC, TaskType
+    addTaskTC,
+    deleteTaskTC,
+    editTaskTC,
+    getTasksTC,
+    makeDoneAC,
+    setForTodayAC,
+    TaskType
 } from "../Reducers/TasksReducer";
 import {useSelector} from "react-redux";
 import {RootType, useAppDispatch} from "../redux/store";
-import {getListsTC} from "../Reducers/TodoListsReducer";
+import {getFilms} from "../API/api2";
+import {log} from "util";
 
 
 type PropsType = {
@@ -83,6 +85,10 @@ export const Todolist = memo((props: PropsType) => {
     const setForToday = (id: string) => {
         dispatch(setForTodayAC(props.id_List, id))
     }
+
+    const getFilmsHandler =() =>{
+        getFilms().then((res)=> console.log(res.data))
+    }
     function filtering() {
         if (filter === 'High') return tasks.filter(el => el.priority === 2)
         if (filter === 'Normal') return tasks.filter(el => el.priority === 1)
@@ -139,6 +145,7 @@ export const Todolist = memo((props: PropsType) => {
                     <SuperButton title={'Normal'} onClickCallBack={changeFilterMedium} buttonStyle={'filter'}/>
                     <SuperButton title={'Low'} onClickCallBack={changeFilterLow} buttonStyle={'filter'}/>
                     <SuperButton title={'All'} onClickCallBack={changeFilterAll} buttonStyle={'filter'}/>
+                    <SuperButton title={'get films'} onClickCallBack={getFilmsHandler} buttonStyle={'filter'}/>
                 </div>}
             <div className="deletetodolist">
                 <img src="/img/delete-button-svgrepo-com.svg" alt="delete the list" onClick={deleteTodolistHandler}/>
