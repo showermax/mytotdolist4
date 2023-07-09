@@ -1,22 +1,17 @@
-import React, {useCallback, useEffect, useReducer, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {v1} from "uuid";
 import {Todolist} from "./Components/Todolist";
 import {NewTodolist} from "./Components/NewTodolist";
-import {
-    addListTC,
-    addNewTodolistAC, deleteListTC,
-    deleteTodolistAC,
-    editTodolistAC, getListsAC, getListsTC, updateListTC
-} from "./Reducers/TodoListsReducer";
-import {useDispatch, useSelector} from "react-redux";
+import {addListTC, deleteListTC, getListsTC, updateListTC} from "./Reducers/TodoListsReducer";
+import {useSelector} from "react-redux";
 import {RootType, useAppDispatch} from "./redux/store";
 import {ListType} from "./API/api";
 import {TaskType} from "./Reducers/TasksReducer";
 import {RequestStatusType} from "./Reducers/AppReducer";
-import {Loading} from "./Components/Loading";
-import {ErrorAlert} from "./Components/ErrorAlert";
+import {Loading} from "./Helpers/Loading";
+import {Notification} from "./Helpers/Notification";
 
 export type TasksType = {
     [key:string]: TaskType[]
@@ -61,7 +56,8 @@ function App() {
                 }
                 <NewTodolist addNew={addNewTodolist}/>
                 {/*<ErrorAlert error={errorState} />*/}
-                {/*{status === 'loading' && <Loading status={status}/>}*/}
+                {status === 'loading' && <Loading />}
+                <Notification />
             </div>
         </div>
     );
