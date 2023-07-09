@@ -4,9 +4,7 @@
     padding:0;
     box-sizing:border-box;
 }
-h3{
-    font-family:Quicksand;
-}
+
 .wrapper {
     position:absolute;
     bottom: 50px;
@@ -47,5 +45,5 @@ $accentColor:darken($bgColor,50);
 }
 @include alert(simpleAlert,#ebebeb);
 @include alert(successAlert,#a8f0c6);
-@include alert(dangerAlert,#f7a7a3);
+@include alert(errorAlert,#f7a7a3);
 @include alert(warningAlert,#ffd48a);

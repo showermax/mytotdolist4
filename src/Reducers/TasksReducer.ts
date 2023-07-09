@@ -4,8 +4,8 @@ import {addNewTodolistAC, deleteTodolistAC, getListsAC} from "./TodoListsReducer
 import {Dispatch} from "redux";
 import {api} from "../API/api";
 import {RootType} from "../redux/store";
-import {string} from "prop-types";
-import {setError} from "./AppReducer";
+
+
 
 export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
@@ -189,7 +189,7 @@ export const getTasksTC = (id_List: string) => (dispatch: Dispatch) => {
 export const addTaskTC = (id_List: string, title: string) => (dispatch: Dispatch) => {
     api.addTask(id_List, title).then(result => {
         (result.data.resultCode === 0) ? dispatch(addTaskAC(result.data.data.item)) :
-        dispatch(setError(result.data.messages[0]))
+        // dispatch(setError(result.data.messages[0]))
         console.log(result.data.messages[0])
     })
 }

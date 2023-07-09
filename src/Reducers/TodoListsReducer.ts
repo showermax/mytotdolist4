@@ -1,6 +1,6 @@
 import {api, ListType} from "../API/api";
 import {Dispatch} from "redux";
-import {setError, setStatusLoading} from "./AppReducer";
+import {setMessage, setStatusLoading} from "./AppReducer";
 
 export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
@@ -66,10 +66,9 @@ export const getListsTC = () => (dispatch: Dispatch) => {
 
 export const addListTC = (newId: string) => (dispatch: Dispatch) => {
     // dispatch(setStatusLoading('loading'))
-    dispatch(setError('loading'))
     api.addList(newId, 'New List').then((result) => {
             dispatch(addNewTodolistAC(newId, 'New List'))
-            dispatch(setError(null))
+            dispatch(setMessage({messageText:'ToDoList is added successfully', typeOfMessage: 'success'}))
         }
     )
 }

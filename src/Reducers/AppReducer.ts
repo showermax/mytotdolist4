@@ -1,8 +1,13 @@
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+export type MessageType = {
+    messageText: string,
+    typeOfMessage: 'success' | 'warning' | 'error'
+}
 
 const initialState = {
     status: 'loading' as RequestStatusType,
-    error: null as null | string
+    message: null as MessageType | null
+
 }
 
 type InitialStateType = typeof initialState
@@ -11,8 +16,8 @@ export const AppReducer = (state: InitialStateType = initialState, action: Actio
     switch (action.type) {
         case 'APP/SET-STATUS':
             return {...state, status: action.status}
-        case 'APP/SET-ERROR':
-            return {...state, error: action.error}
+        case 'APP/SET-MESSAGE':
+            return {...state, message:  action.message ? {...state.message, messageText: action.message.messageText, typeOfMessage: action.message.typeOfMessage} : action.message}
         default:
             return state
     }
@@ -25,11 +30,11 @@ export const setStatusLoading = (status: RequestStatusType) => {
         status
     } as const
 }
-type ActionsType = SetStatusLoadingType | ReturnType<typeof setError>
+type ActionsType = SetStatusLoadingType | ReturnType<typeof setMessage>
 
-export const setError = (error: null | string) => {
+export const setMessage = (message: MessageType | null) => {
     return {
-        type: 'APP/SET-ERROR',
-        error
+        type: 'APP/SET-MESSAGE',
+        message
     } as const
 }

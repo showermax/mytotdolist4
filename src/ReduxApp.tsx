@@ -25,7 +25,6 @@ function App() {
         },[])
     const todolists = useSelector<RootType,ListType[]>(s => s.todolists)
     const status = useSelector<RootType,RequestStatusType>(s => s.app.status)
-    const errorState = useSelector<RootType,null | string>(s => s.app.error)
 
     const addNewTodolist = useCallback(() => {
         let newID = v1()
@@ -37,8 +36,7 @@ function App() {
     const editTodolist = useCallback((id_List: string, s: string) => {
         dispatch(updateListTC(id_List,s))
     },[])
-    console.log(status)
-    console.log(errorState)
+
     return (
         <div className="App">
             <header className="App-header">
