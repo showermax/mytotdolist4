@@ -6,7 +6,6 @@ import {api} from "../API/api";
 import {RootType} from "../redux/store";
 
 
-
 export const Inbox: string = 'todolistid-inbox'
 export const Today: string = 'todolistid-today'
 export const Completed: string = 'todolistid-completed'
@@ -25,7 +24,7 @@ export type TaskType = {
     addedDate: Date
 }
 export type ModelType = {
-    title?:string,
+    title?: string,
     description?: string,
     completed?: boolean,
     status?: number,
@@ -37,6 +36,7 @@ const initialState: TasksType = {}
 
 
 export function TasksReducer(state: TasksType = initialState, action: ActionsType) {
+    console.log(state[Completed])
     switch (action.type) {
         case 'GET-LISTS': {
             const copyState = {...state}
@@ -58,37 +58,39 @@ export function TasksReducer(state: TasksType = initialState, action: ActionsTyp
                 [action.payload.id_List]: state[action.payload.id_List].filter(el => el.id !== action.payload.id_Task)
             }
         }
-        // case 'MAKE-DONE':{
-        //     const parentListId = state[action.payload.id_List].filter(el => el.id == action.payload.id_Task)[0].properties.parent; // достаем id листа, в котором таска создалась
-        //     return (
-        //         (action.payload.id_List !== Completed) ? {
-        //             ...state,
-        //             [Completed]: [...state[Completed], ...state[action.payload.id_List].filter(el => el.id === action.payload.id_Task).map(el => ({
-        //                 ...el,
-        //                 isDone: action.payload.e
-        //             }))],
-        //
-        //             [action.payload.id_List]: state[action.payload.id_List].filter(el => el.id !== action.payload.id_Task),
-        //
-        //         }
-        //         :
-        //         {
-        //             ...state,
-        //             [Completed]: state[action.payload.id_List].filter(el => el.id !== action.payload.id_Task).map(el => ({...el, isDone: true})),
-        //             [parentListId]: [...state[parentListId], ...state[action.payload.id_List].filter(el => el.id === action.payload.id_Task).map(el => ({
-        //                 ...el,
-        //                 isDone: action.payload.e
-        //             }))],
-        //
-        //         }
-        // )
-        // }
+        case 'MAKE-DONE': {
+            // const parentListId = state[action.payload.id_List].filter(el => el.id == action.payload.id_Task)[0].properties.parent; // достаем id листа, в котором таска создалась
+            const parentListId = action.payload.task.todoListId
+            return (
+                (action.payload.task.todoListId !== Completed) ? {
+                        ...state,
+                        [Completed]: [...state[Completed], ...state[action.payload.task.todoListId].filter(el => el.id === action.payload.task.id).map(el => ({
+                            ...el,
+                            completed: true}))
+                        ],
+                        [action.payload.task.todoListId]: state[action.payload.task.todoListId].filter(el => el.id !== action.payload.task.id),
+                    }
+                    :
+                    {
+                        // ...state,
+                        // [Completed]: state[action.payload.id_List].filter(el => el.id !== action.payload.id_Task).map(el => ({
+                        //     ...el,
+                        //     completed: true
+                        // })),
+                        // [parentListId]: [...state[parentListId], ...state[action.payload.id_List].filter(el => el.id === action.payload.id_Task).map(el => ({
+                        //     ...el,
+                        //     completed: action.payload.e
+                        // }))],
+
+                    }
+            )
+        }
         case 'EDIT-TASK': {
             return {
                 ...state,
                 [action.payload.task.todoListId]: state[action.payload.task.todoListId].map(el => el.id === action.payload.task.id ?
                     action.payload.task
-                 : el)
+                    : el)
             }
         }
         case 'SET-FOR-TODAY': {
@@ -147,13 +149,11 @@ export const deleteTaskAC = (id_List: string, id_Task: string) => ({
     type: 'DELETE-TASK',
     payload: {id_List, id_Task}
 } as const)
-export const makeDoneAC = (id_List: string, id_Task: string, e: boolean) => {
+export const makeDoneAC = (task: TaskType) => {
     return {
         type: 'MAKE-DONE',
         payload: {
-            id_List,
-            id_Task,
-            e
+            task
         }
     } as const
 }
@@ -189,15 +189,15 @@ export const getTasksTC = (id_List: string) => (dispatch: Dispatch) => {
 export const addTaskTC = (id_List: string, title: string) => (dispatch: Dispatch) => {
     api.addTask(id_List, title).then(result => {
         (result.data.resultCode === 0) ? dispatch(addTaskAC(result.data.data.item)) :
-        // dispatch(setError(result.data.messages[0]))
-        console.log(result.data.messages[0])
+            // dispatch(setError(result.data.messages[0]))
+            console.log(result.data.messages[0])
     })
 }
-export const deleteTaskTC = (id_List: string, id_Task:string) => (dispatch: Dispatch) => {
-    api.deleteTask(id_List,id_Task).then(result => dispatch(deleteTaskAC(id_List,id_Task)))
+export const deleteTaskTC = (id_List: string, id_Task: string) => (dispatch: Dispatch) => {
+    api.deleteTask(id_List, id_Task).then(result => dispatch(deleteTaskAC(id_List, id_Task)))
 }
-export const editTaskTC = (id_List: string, id_Task:string, property:ModelType) => (dispatch: Dispatch, getState: ()=> RootType ) => {
-    const task = getState().tasks[id_List].find(el=>el.id === id_Task)
+export const editTaskTC = (id_List: string, id_Task: string, property: ModelType) => (dispatch: Dispatch, getState: () => RootType) => {
+    const task = getState().tasks[id_List].find(el => el.id === id_Task)
     if (task) {
         const model = {
             title: task.title,
@@ -214,9 +214,6 @@ export const editTaskTC = (id_List: string, id_Task:string, property:ModelType) 
         })
     }
 }
-
-
-
 
 
 // const InitialState: TasksType = {

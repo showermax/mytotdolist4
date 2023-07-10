@@ -14,7 +14,6 @@ import {
 } from "../Reducers/TasksReducer";
 import {useSelector} from "react-redux";
 import {RootType, useAppDispatch} from "../redux/store";
-import {getFilms} from "../API/api2";
 import {Inbox, Today} from "../Reducers/TodoListsReducer";
 
 
@@ -27,15 +26,7 @@ type PropsType = {
 }
 
 export type PriorityType = 'High' | 'Normal' | 'Low'
-// export type TaskType = {
-//     id: string
-//     taskName: string
-//     isDone: boolean
-//     properties: {
-//         tags: { priority: string, today: boolean }
-//         parent: string
-//     }
-// }
+
 export const Todolist = memo((props: PropsType) => {
     const [newTaskName, setNewTaskName] = useState<string>('')
     const [filter, setFilter] = useState<string>('')
@@ -74,8 +65,8 @@ export const Todolist = memo((props: PropsType) => {
     const changeFilterAll = () => {
         setFilter('')
     }
-    const makeDone = (id_task: string, e: boolean) => {
-        dispatch(makeDoneAC(props.id_List, id_task, e))
+    const makeDone = (task: TaskType) => {
+        dispatch(makeDoneAC(task))
     }
     const deleteTask = (id_Task: string) => {
         dispatch(deleteTaskTC(props.id_List, id_Task))
@@ -85,10 +76,6 @@ export const Todolist = memo((props: PropsType) => {
     }
     const setForToday = (id: string) => {
         dispatch(setForTodayAC(props.id_List, id))
-    }
-
-    const getFilmsHandler = () => {
-        getFilms().then((res) => console.log(res.data))
     }
 
     function filtering() {
@@ -106,13 +93,14 @@ export const Todolist = memo((props: PropsType) => {
         dispatch(editTaskTC(props.id_List, id_Task, {priority: +e.currentTarget.value}))
 
     }
+    console.log(filter)
     return (
         <div className="todolist">
             <div className="listwrapper">
                 <div className={'todolistTitle'}>
                     <EditableSpan content={props.title}
-                                                               editContent={editHandler}
-                                                               defaultState={props.title === 'New List'}/></div>
+                                  editContent={editHandler}
+                                  defaultState={props.title === 'New List'}/></div>
                 {props.id_List !== Completed && <div className="input">
                     <SuperInput type="text" value={newTaskName} onChangeCallback={onChangeHandler}
                                 onKeyDownCallBack={onKeyDownHandler}/>
@@ -125,7 +113,7 @@ export const Todolist = memo((props: PropsType) => {
                             <li key={i}>
                                 <div className={'task'}>
                                     <input type="checkbox" checked={el.completed}
-                                           onChange={(e: ChangeEvent<HTMLInputElement>) => makeDone(el.id, e.currentTarget.checked)}/>
+                                           onChange={(e: ChangeEvent<HTMLInputElement>) => makeDone(el)}/>
                                     <EditableSpan content={el.title}
                                                   editContent={(s: string) => editTask(el.id, s)}
                                                   defaultState={false}/>
@@ -147,13 +135,18 @@ export const Todolist = memo((props: PropsType) => {
             {
                 props.title !== Completed &&
                 <div>
-                    <SuperButton title={'High'} onClickCallBack={changeFilterHigh} buttonStyle={'filter'}/>
-                    <SuperButton title={'Normal'} onClickCallBack={changeFilterMedium} buttonStyle={'filter'}/>
-                    <SuperButton title={'Low'} onClickCallBack={changeFilterLow} buttonStyle={'filter'}/>
-                    <SuperButton title={'All'} onClickCallBack={changeFilterAll} buttonStyle={'filter'}/>
+                    <SuperButton title={'All'} onClickCallBack={changeFilterAll}
+                                 buttonStyle={(filter === '') ? 'activeFilter' : 'filter'}/>
+                    <SuperButton title={'High'} onClickCallBack={changeFilterHigh}
+                                 buttonStyle={(filter === 'High') ? 'activeFilter' : 'filter'}/>
+                    <SuperButton title={'Normal'} onClickCallBack={changeFilterMedium}
+                                 buttonStyle={(filter === 'Normal') ? 'activeFilter' : 'filter'}/>
+                    <SuperButton title={'Low'} onClickCallBack={changeFilterLow}
+                                 buttonStyle={(filter === 'Low') ? 'activeFilter' : 'filter'}/>
+
                 </div>
             }
-            {!props.pending && ![Completed,Inbox,Today].includes(props.id_List) && <div className="deletetodolist">
+            {!props.pending && ![Completed, Inbox, Today].includes(props.id_List) && <div className="deletetodolist">
                 <img src="/img/delete-button-svgrepo-com.svg" alt="delete the list" onClick={deleteTodolistHandler}/>
             </div>}
         </div>
