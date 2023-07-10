@@ -99,7 +99,7 @@ export function TasksReducer(state: TasksType = initialState, action: ActionsTyp
             }
         }
         case 'ADD-TODOLIST': {
-            return {...state, [action.payload.id]: []}
+            return {...state, [action.payload.todoList.id]: []}
         }
         case 'DELETE-TODOLIST': {
             delete state[action.payload.id]

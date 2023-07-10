@@ -1,11 +1,12 @@
 import React from 'react';
 import style from './Notidication.module.scss'
+import './Notidication.scss'
 import {useSelector} from "react-redux";
 import {RootType, useAppDispatch} from "../redux/store";
 import {MessageType, setMessage} from "../Reducers/AppReducer";
 
 const Alert = (props: any) => {
-    console.log(`${style.alert} ${props.alertType}Alert`)
+    console.log(`alert ${props.alertType}Alert`)
     return (
         <div className={`${style.alert} ${props.alertType}Alert`}>
             <h3>{props.alertText}</h3>

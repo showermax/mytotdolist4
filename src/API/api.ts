@@ -12,7 +12,11 @@ type ResponceType<T={}> = {
     messages: Array<string>,
     data: T
 }
-
+export const resultCode = {
+    success: 0,
+    error: 1,
+    error2:10
+} as const
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1',
     withCredentials: true
@@ -23,9 +27,9 @@ export const api = {
     getLists () {
         return instance.get<ListType[]>('/todo-lists')
     },
-    addList (id:string,title:string) {
+    addList (title:string) {
         return instance.post<ResponceType<{ item: ListType }>>('/todo-lists',
-            {id,title})
+            {title})
     },
     deleteList (id_List:string) {
         return instance.delete<ResponceType>(`/todo-lists/${id_List}`)

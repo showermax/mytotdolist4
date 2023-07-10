@@ -18,10 +18,11 @@ export const EditableSpan = memo((props: EditableSpanPropsType) => {
         if (key.key === 'Enter') {
             if (newName) {
                 props.editContent(newName.trim())
+                setEdit(false)
             } else {
                 setError(true)
             }
-            setEdit(false)
+            // setEdit(false)
         }
     }
     const setEditsHandler = () => {

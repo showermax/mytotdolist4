@@ -4,10 +4,9 @@ import './App.css';
 import {v1} from "uuid";
 import {Todolist} from "./Components/Todolist";
 import {NewTodolist} from "./Components/NewTodolist";
-import {addListTC, deleteListTC, getListsTC, updateListTC} from "./Reducers/TodoListsReducer";
+import {addListTC, deleteListTC, FrontListType, getListsTC, updateListTC} from "./Reducers/TodoListsReducer";
 import {useSelector} from "react-redux";
 import {RootType, useAppDispatch} from "./redux/store";
-import {ListType} from "./API/api";
 import {TaskType} from "./Reducers/TasksReducer";
 import {RequestStatusType} from "./Reducers/AppReducer";
 import {Loading} from "./Helpers/Loading";
@@ -23,7 +22,7 @@ function App() {
     useEffect(()=>{
         dispatch(getListsTC())
         },[])
-    const todolists = useSelector<RootType,ListType[]>(s => s.todolists)
+    const todolists = useSelector<RootType,FrontListType[]>(s => s.todolists)
     const status = useSelector<RootType,RequestStatusType>(s => s.app.status)
 
     const addNewTodolist = useCallback(() => {
@@ -50,6 +49,7 @@ function App() {
                         title={el.title}
                         deleteTodolist={deleteTodolist}
                         editTodolist={editTodolist}
+                        pending={el.pending}
                     />)
                 }
                 <NewTodolist addNew={addNewTodolist}/>
