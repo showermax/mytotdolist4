@@ -16,7 +16,7 @@ export type TasksType = {
     [key:string]: TaskType[]
 }
 
-export const Completed: string = 'todolistid-completed'
+export const Completed: string = 'afe14866-76ac-4f6a-9fae-99eac3566917'
 function App() {
     const dispatch = useAppDispatch()
     useEffect(()=>{

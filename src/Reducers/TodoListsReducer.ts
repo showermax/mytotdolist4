@@ -2,10 +2,10 @@ import {api, ListType, resultCode} from "../API/api";
 import {Dispatch} from "redux";
 import {setMessage, setStatusLoading} from "./AppReducer";
 
-export const Inbox: string = 'todolistid-inbox'
-export const Today: string = 'todolistid-today'
-export const Completed: string = 'todolistid-completed'
-export type FrontListType = ListType & {pending: boolean}
+export const Inbox: string = '86e786e4-a8da-4819-a802-273f5c9f2cde'
+export const Today: string = '12990b71-103c-4157-8c4b-0ee5275fc60b'
+
+export type FrontListType = ListType & { pending: boolean }
 
 const initialState: FrontListType[] = [
     // {id: Inbox, title: 'Inbox',addedDate: '',order: 0},
@@ -23,7 +23,7 @@ export const TodoListsReducer = (state: FrontListType[] = initialState, action: 
         case 'DELETE-TODOLIST':
             return state.filter(el => el.id !== action.payload.id)
         case "CHANGE-PENDING":
-            return state.map(el=> el.id === action.payload.id_List ? {...el, pending: !el.pending}:el)
+            return state.map(el => el.id === action.payload.id_List ? {...el, pending: !el.pending} : el)
         default:
             return state
     }
@@ -69,6 +69,7 @@ export const getListsTC = () => (dispatch: Dispatch) => {
     api.getLists().then((result) => {
         dispatch(getListsAC(result.data))
         dispatch(setStatusLoading('succeeded'))
+        console.log(result.data)
     })
 }
 
@@ -76,27 +77,38 @@ export const addListTC = (newId: string) => (dispatch: Dispatch) => {
     dispatch(setStatusLoading('loading'))
     api.addList('New List')
         .then((result) => {
-            if (result.data.resultCode === resultCode.success) {
-                dispatch(addNewTodolistAC(result.data.data.item))
-                dispatch(setMessage({messageText:'Please, enter the title of your list', typeOfMessage: 'warning'}))
-                dispatch(setStatusLoading('succeeded'))}
-            else {
-                dispatch(setMessage({messageText: result.data.messages[0] ? result.data.messages[0] : 'Something went wrong, call 911', typeOfMessage: 'error'}))
+                if (result.data.resultCode === resultCode.success) {
+                    dispatch(addNewTodolistAC(result.data.data.item))
+                    dispatch(setMessage({messageText: 'Please, enter the title of your list', typeOfMessage: 'warning'}))
+                    dispatch(setStatusLoading('succeeded'))
+                } else {
+                    dispatch(setMessage({
+                        messageText: result.data.messages[0] ? result.data.messages[0] : 'Something went wrong, call 911',
+                        typeOfMessage: 'error'
+                    }))
+                }
             }
-        }
-    )
+        )
         .catch((e) => {
-            console.log(e)})
-        .finally(()=>dispatch(setStatusLoading('succeeded')))
+            console.log(e)
+        })
+        .finally(() => dispatch(setStatusLoading('succeeded')))
 }
 
 export const deleteListTC = (id_List: string) => (dispatch: Dispatch) => {
     dispatch(setStatusLoading('loading'))
     dispatch(changePendingAC(id_List))
-    api.deleteList(id_List).then((result) => dispatch(deleteTodolistAC(id_List)))
+    api.deleteList(id_List).then((result) => {
+            dispatch(deleteTodolistAC(id_List))
+            dispatch(setStatusLoading('succeeded'))
+        }
+    )
 }
 
 export const updateListTC = (id_List: string, title: string) => (dispatch: Dispatch) => {
-    // dispatch(setStatusLoading('loading'))
-    api.updateList(id_List, title).then((result) => dispatch(editTodolistAC(id_List, title)))
+    dispatch(setStatusLoading('loading'))
+    api.updateList(id_List, title).then((result) => {
+        dispatch(editTodolistAC(id_List, title))
+        dispatch(setStatusLoading('succeeded'))
+    })
 }

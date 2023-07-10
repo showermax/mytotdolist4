@@ -15,6 +15,7 @@ import {
 import {useSelector} from "react-redux";
 import {RootType, useAppDispatch} from "../redux/store";
 import {getFilms} from "../API/api2";
+import {Inbox, Today} from "../Reducers/TodoListsReducer";
 
 
 type PropsType = {
@@ -152,7 +153,7 @@ export const Todolist = memo((props: PropsType) => {
                     <SuperButton title={'All'} onClickCallBack={changeFilterAll} buttonStyle={'filter'}/>
                 </div>
             }
-            {!props.pending && <div className="deletetodolist">
+            {!props.pending && ![Completed,Inbox,Today].includes(props.id_List) && <div className="deletetodolist">
                 <img src="/img/delete-button-svgrepo-com.svg" alt="delete the list" onClick={deleteTodolistHandler}/>
             </div>}
         </div>
