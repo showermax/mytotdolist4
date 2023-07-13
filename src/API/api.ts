@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {ModelType, TaskType} from "../Reducers/TasksReducer";
 
 export type ListType =  {
@@ -12,11 +12,18 @@ type ResponceType<T={}> = {
     messages: Array<string>,
     data: T
 }
+export type LoginType = {
+    mail?: string,
+    pass?: string,
+    rememberMe?: boolean
+}
+
 export const resultCode = {
     success: 0,
     error: 1,
     error2:10
 } as const
+
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1',
     withCredentials: true
@@ -49,6 +56,10 @@ export const api = {
     },
     editTask (id_List: string, id_Task:string, model:ModelType) {
         return instance.put<ResponceType<{item:TaskType}>>(`/todo-lists/${id_List}/tasks/${id_Task}`, model)
+    },
+    loginMe (login: LoginType) {
+        return instance.post<ResponceType<{ userId: number }>, AxiosResponse<ResponceType<{ userId: number }>>, LoginType>('/auth/login', login)
     }
 }
 
+//request<T = any, R = axios.AxiosResponse<T>, D = any>

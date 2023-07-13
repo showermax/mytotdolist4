@@ -102,6 +102,10 @@ section .signin .content .form .inputBox i
 }
 .rememberMe {
     color:#fff;
+    text-align: left;
+}
+.rememberMe input {
+    width:40px;
 }
 input[type="submit"]:active
 {
@@ -122,4 +126,16 @@ input[type="submit"]:active
         width: calc(20vw - 2px);
         height: calc(20vw - 2px);
     }
+}
+
+.error {
+    margin-top: -20px;
+    text-align: left;
+    font-style: italic;
+    color: red;
+}
+
+.disable {
+    opacity: 0.5;
+    pointer-events: none;
 }
