@@ -23,15 +23,16 @@ export const AppReducer = (state: InitialStateType = initialState, action: Actio
     }
 }
 
-type SetStatusLoadingType = ReturnType<typeof setStatusLoading>
+export type SetStatusLoadingType = ReturnType<typeof setStatusLoading>
 export const setStatusLoading = (status: RequestStatusType) => {
     return {
         type: 'APP/SET-STATUS',
         status
     } as const
 }
-type ActionsType = SetStatusLoadingType | ReturnType<typeof setMessage>
+type ActionsType = SetStatusLoadingType | SetMessageType
 
+export type SetMessageType = ReturnType<typeof setMessage>
 export const setMessage = (message: MessageType | null) => {
     return {
         type: 'APP/SET-MESSAGE',

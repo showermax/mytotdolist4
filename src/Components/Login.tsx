@@ -2,25 +2,34 @@ import React from 'react';
 import './Login.css'
 import {useFormik} from "formik";
 import {validate} from "../Utils/formikvalidate";
+import {loginTC} from "../Reducers/AuthRedicer";
+
+import {RootType, useAppDispatch} from "../redux/store";
+import {useSelector} from "react-redux";
+import {Navigate} from "react-router-dom";
 export type FormikValuesType = {
-    mail?: string,
-    pass?: string,
+    email?: string,
+    password?: string,
     rememberMe?: boolean
 }
 
 export const Login = () => {
+    const dispatch = useAppDispatch()
+    const isLoggenIn = useSelector<RootType, boolean>(state => state.auth.isLoggedIn)
     const loginForm = useFormik({
         initialValues: {
-            mail: '',
-            pass: '',
+            email: '',
+            password: '',
             rememberMe: false
         },
         validate,
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+            dispatch(loginTC(values))
             loginForm.resetForm()
         }
     })
+    if (!isLoggenIn) return <Navigate to = {'/'} />
+
     return (
         <section>
             <div className="signin">
@@ -28,17 +37,17 @@ export const Login = () => {
                     <h2>Sign In</h2>
                     <form className="form" onSubmit={loginForm.handleSubmit}>
                         <div className="inputBox">
-                            <input type="text"  id={'mail'} name={'mail'} onChange={loginForm.handleChange} onBlur={loginForm.handleBlur} value={loginForm.values.mail}/> <i>e-mail</i>
+                            <input type="text"  id={'email'} name={'email'} onChange={loginForm.handleChange} onBlur={loginForm.handleBlur} value={loginForm.values.email}/> <i>e-mail</i>
                         </div>
-                        {loginForm.touched.mail && loginForm.errors.mail && <div className ='error'>{loginForm.errors.mail}</div>}
+                        {loginForm.touched.email && loginForm.errors.email && <div className ='error'>{loginForm.errors.email}</div>}
                         <div className="inputBox">
-                            <input type="password" id={'pass'} {...loginForm.getFieldProps('pass')} /> <i>Password</i>
+                            <input type="password" id={'password'} {...loginForm.getFieldProps('password')} /> <i>Password</i>
                         </div>
-                        {loginForm.touched.mail && loginForm.errors.pass && <div className ='error'>{loginForm.errors.pass}</div>}
+                        {loginForm.touched.email && loginForm.errors.password && <div className ='error'>{loginForm.errors.password}</div>}
                         <div className="rememberMe">
                             <input type="checkbox" id={'rememberMe'} checked = {loginForm.values.rememberMe} {...loginForm.getFieldProps('rememberMe')} /> <i>Remember me</i>
                         </div>
-                        <div className={!loginForm.errors.pass && !loginForm.errors.mail ? 'inputBox' : 'inputBox disable'} >
+                        <div className={!loginForm.errors.password && !loginForm.errors.email ? 'inputBox' : 'inputBox disable'} >
                             <input type="submit" value="Login" />
                         </div>
                     </form>

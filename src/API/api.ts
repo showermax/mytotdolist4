@@ -13,9 +13,9 @@ type ResponceType<T={}> = {
     data: T
 }
 export type LoginType = {
-    mail?: string,
-    pass?: string,
-    rememberMe?: boolean
+    email: string,
+    password: string,
+    rememberMe: boolean
 }
 
 export const resultCode = {
